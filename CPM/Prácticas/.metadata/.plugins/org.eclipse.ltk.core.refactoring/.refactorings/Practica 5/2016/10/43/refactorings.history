@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Extract method &apos;private String elegirGanador()&apos; from &apos;igu.VentanaPrincipal.representarEstadoJuego()&apos; to &apos;igu.VentanaPrincipal&apos;&#x0D;&#x0A;- Original project: &apos;Practica 5&apos;&#x0D;&#x0A;- Method name: &apos;elegirGanador&apos;&#x0D;&#x0A;- Destination type: &apos;igu.VentanaPrincipal&apos;&#x0D;&#x0A;- Declared visibility: &apos;private&apos;" comments="false" description="Extract method &apos;elegirGanador&apos;" destination="0" exceptions="false" flags="786434" id="org.eclipse.jdt.ui.extract.method" input="/src&lt;igu{VentanaPrincipal.java" name="elegirGanador" replace="false" selection="20267 170" stamp="1477491874885" version="1.0" visibility="2"/>
+</session>

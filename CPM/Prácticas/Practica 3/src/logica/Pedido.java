@@ -1,0 +1,139 @@
+package logica;
+import igu.VentanaConfirmacion;
+import igu.VentanaPrincipal;
+import igu.VentanaRegistro;
+
+import java.io.*;
+import java.util.*;
+
+import javax.swing.JOptionPane;
+
+public class Pedido {
+	
+	private List<Articulo> articulosPedido = null;
+	private VentanaConfirmacion vC;
+	
+	public Pedido(VentanaConfirmacion vc){
+		articulosPedido = new ArrayList<Articulo>();
+		vC= vc;
+	}
+	
+	public Pedido()
+	{
+		articulosPedido= new ArrayList<Articulo>();
+	}
+	
+	public List<Articulo> getArticulosPedido()
+	{
+		return articulosPedido;
+	}
+	
+	public void add(Articulo articulo, int unidades){
+		Articulo articuloEnPedido = null;
+	
+		for (Articulo a : articulosPedido){
+			if (a.getCodigo().equals(articulo.getCodigo()))
+				articuloEnPedido = a;
+		}
+		
+		if (articuloEnPedido == null){
+			articulo.setUnidades(unidades);
+			articulosPedido.add(articulo);
+		}
+		else
+		{
+			int totalUnidades = articuloEnPedido.getUnidades() + unidades;
+			articuloEnPedido.setUnidades(totalUnidades);
+		}
+	}
+	
+	public void remove(Articulo articulo, int unidades)
+	{
+		if (unidades > 0 && articulo != null && (unidades <= articulo.getUnidades()))
+		{
+			Articulo articuloEnPedido= null;
+			int unidadesArticulo= 0;
+			
+			for (Articulo a : articulosPedido)
+			{
+				if (a.getCodigo().equals(articulo.getCodigo()))
+					articuloEnPedido = a;
+			}
+			
+			unidadesArticulo= articuloEnPedido.getUnidades();
+			articuloEnPedido.setUnidades(unidadesArticulo - unidades);
+			if (articuloEnPedido.getUnidades() == 0)
+			{
+				articulosPedido.remove(articuloEnPedido);
+			}
+		}
+	}
+	
+	public float calcularTotalSinIva(){
+		float total = 0.0f;
+		float descuento= 0.15f;
+		float precio= 0.0f;
+		
+		for (Articulo a : articulosPedido)
+		{
+			if (a.getUnidades() < 10)
+			{
+				total += a.getPrecio()* a.getUnidades();
+			}
+			else
+			{
+				precio= a.getPrecio()* a.getUnidades();
+				total += precio - descuento*precio;
+			}
+		}
+		return total;
+	}
+	
+	public float calcularTotalConIva()
+	{
+		final float IVA= 0.21f;
+		return calcularTotalSinIva() + calcularTotalSinIva()*IVA;
+	}
+
+	public void grabarPedido(String nombreFichero){
+		try {
+				VentanaRegistro vR= new VentanaRegistro(null);
+				
+		        BufferedWriter fichero = new BufferedWriter(new FileWriter("files/" + nombreFichero + ".dat"));
+//		        fichero.write(vR.toString()+"\n");
+		        String linea = articulosPedido.toString();
+		        fichero.write(linea);
+		        fichero.close();
+			}
+
+		catch (FileNotFoundException fnfe) {
+		      System.out.println("El archivo no se ha podido guardar");
+		    }
+		catch (IOException ioe) {
+		      new RuntimeException("Error de entrada/salida");
+		}
+	  }
+
+	public void inicializar(){
+		articulosPedido.clear();
+	}
+	
+	public boolean comprobarCantidadArticulos(Articulo articulo)
+	{
+		for (Articulo a: articulosPedido)
+		{
+			if (a.equals(articulo))
+			{
+				if (a.getUnidades() >= 10)
+				{
+//					a.setIsDescApplied(true);
+					return true;
+				}
+				else
+					return false;
+			}
+		}
+		return true;
+	}
+}
+

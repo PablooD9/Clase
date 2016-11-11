@@ -1,0 +1,214 @@
+package igu;
+
+import java.awt.EventQueue;
+
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.ImageIcon;
+import javax.swing.SwingConstants;
+
+import java.awt.Font;
+
+import javax.swing.JTextField;
+import javax.swing.JButton;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.io.IOException;
+
+import logica.Pedido;
+
+public class VentanaConfirmacion extends JDialog {
+	private JLabel lbOk;
+	private JLabel lbAviso;
+	private JLabel lbCodigo;
+	private JTextField txCodigo;
+	private JButton btnFinalizar;
+	private VentanaRegistro vR;
+	private VentanaPrincipal vP;
+	private JLabel lblPrecioDelPedido;
+	private JTextField txPrecioPedido;
+	private JLabel lblIvaDelPedido;
+	private JTextField txtFieldIVA;
+	private JLabel lblPrecioTotal;
+	private JTextField txtFieldPrecioTotal;
+	
+	public VentanaConfirmacion()
+	{
+		setTitle("Venta accesorios: Confirmaci\u00F3n del pedido");
+		setBounds(100, 100, 450, 300);
+		getContentPane().setLayout(null);
+		getContentPane().add(getLbOk());
+		getContentPane().add(getLbAviso());
+		getContentPane().add(getLbCodigo());
+		getContentPane().add(getTxCodigo());
+		getContentPane().add(getBtnFinalizar());
+		getContentPane().add(getLblPrecioDelPedido());
+		getContentPane().add(getTxPrecioPedido());
+		getContentPane().add(getLblIvaDelPedido());
+		getContentPane().add(getTxtFieldIVA());
+		getContentPane().add(getLblPrecioTotal());
+		getContentPane().add(getTxtFieldPrecioTotal());
+	}
+	
+	/**
+	 * Create the dialog.
+	 */
+	public VentanaConfirmacion(VentanaRegistro vReg, VentanaPrincipal vPrin) {
+		vR=vReg;
+		vP=vPrin;
+		setTitle("Venta accesorios: Confirmaci\u00F3n del pedido");
+		setBounds(100, 100, 450, 300);
+		getContentPane().setLayout(null);
+		getContentPane().add(getLbOk());
+		getContentPane().add(getLbAviso());
+		getContentPane().add(getLbCodigo());
+		getContentPane().add(getTxCodigo());
+		getContentPane().add(getBtnFinalizar());
+		getContentPane().add(getLblPrecioDelPedido());
+		getContentPane().add(getTxPrecioPedido());
+		getContentPane().add(getLblIvaDelPedido());
+		getContentPane().add(getTxtFieldIVA());
+		getContentPane().add(getLblPrecioTotal());
+		getContentPane().add(getTxtFieldPrecioTotal());
+	}
+
+	private JLabel getLbOk() {
+		if (lbOk == null) {
+			lbOk = new JLabel("");
+			lbOk.setHorizontalAlignment(SwingConstants.CENTER);
+			lbOk.setIcon(new ImageIcon(VentanaConfirmacion.class.getResource("/img/ok.png")));
+			lbOk.setBounds(22, 30, 103, 82);
+		}
+		return lbOk;
+	}
+	private JLabel getLbAviso() {
+		if (lbAviso == null) {
+			lbAviso = new JLabel("Estamos procesando su pedido");
+			lbAviso.setFont(new Font("Tw Cen MT", Font.BOLD, 18));
+			lbAviso.setBounds(135, 62, 255, 29);
+		}
+		return lbAviso;
+	}
+	private JLabel getLbCodigo() {
+		if (lbCodigo == null) {
+			lbCodigo = new JLabel("El c\u00F3digo de recogida es:");
+			lbCodigo.setFont(new Font("Lao UI", Font.BOLD, 18));
+			lbCodigo.setBounds(22, 102, 235, 50);
+		}
+		return lbCodigo;
+	}
+	private JTextField getTxCodigo() {
+		if (txCodigo == null) {
+			txCodigo = new JTextField();
+			txCodigo.setEditable(false);
+			txCodigo.setBounds(258, 117, 132, 29);
+			txCodigo.setColumns(10);
+			txCodigo.setText(generarCodigo());
+		}
+		return txCodigo;
+	}
+	private JButton getBtnFinalizar() {
+		if (btnFinalizar == null) {
+			btnFinalizar = new JButton("Finalizar");
+			btnFinalizar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) 
+				{
+					vR.getVP().getPedido().grabarPedido(txCodigo.getText());
+					vR.getVP().getPedido().inicializar();
+					dispose();
+					vR.dispose(); //borra la de Registro.
+					vP.inicializar(); //borra la ventana Principal.
+				}
+			});
+			btnFinalizar.setMnemonic('F');
+			btnFinalizar.setBounds(301, 217, 89, 23);
+		}
+		return btnFinalizar;
+	}
+	
+	private String generarCodigo()
+	{
+		String codigo= "";
+		String base= "0123456789abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ";
+		int longitud= 10;
+		for (int i=0; i< longitud; i++)
+		{
+			int numero= (int)(Math.random()*(base.length()));
+			codigo += base.charAt(numero);
+		}
+		return codigo;
+	}
+	
+	private void mostrarVentanaPrincipal()
+	{
+		try
+		{
+			VentanaPrincipal vP= new VentanaPrincipal();
+			vP.setVisible(true);
+		} catch(IOException ioe){
+			ioe.printStackTrace();
+		}
+	}
+	private JLabel getLblPrecioDelPedido() {
+		if (lblPrecioDelPedido == null) {
+			lblPrecioDelPedido = new JLabel("Precio del pedido:");
+			lblPrecioDelPedido.setFont(new Font("Tahoma", Font.PLAIN, 13));
+			lblPrecioDelPedido.setBounds(22, 163, 149, 14);
+		}
+		return lblPrecioDelPedido;
+	}
+	private JTextField getTxPrecioPedido() {
+		if (txPrecioPedido == null) {
+			txPrecioPedido = new JTextField();
+			txPrecioPedido.setHorizontalAlignment(SwingConstants.CENTER);
+			txPrecioPedido.setEditable(false);
+			txPrecioPedido.setBounds(132, 163, 86, 20);
+			txPrecioPedido.setColumns(10);
+			txPrecioPedido.setText(vR.getVP().getPedido().calcularTotalSinIva()+"");
+		}
+		return txPrecioPedido;
+	}
+	private JLabel getLblIvaDelPedido() {
+		if (lblIvaDelPedido == null) {
+			lblIvaDelPedido = new JLabel("IVA del pedido:");
+			lblIvaDelPedido.setBounds(22, 193, 103, 14);
+		}
+		return lblIvaDelPedido;
+	}
+	private JTextField getTxtFieldIVA() {
+		if (txtFieldIVA == null) {
+			txtFieldIVA = new JTextField();
+			txtFieldIVA.setHorizontalAlignment(SwingConstants.CENTER);
+			txtFieldIVA.setToolTipText("IVA de los productos");
+			txtFieldIVA.setText("21%");
+			txtFieldIVA.setEditable(false);
+			txtFieldIVA.setBounds(103, 192, 115, 20);
+			txtFieldIVA.setColumns(10);
+		}
+		return txtFieldIVA;
+	}
+	private JLabel getLblPrecioTotal() {
+		if (lblPrecioTotal == null) {
+			lblPrecioTotal = new JLabel("Precio total:");
+			lblPrecioTotal.setBounds(22, 220, 78, 14);
+		}
+		return lblPrecioTotal;
+	}
+	private JTextField getTxtFieldPrecioTotal() {
+		if (txtFieldPrecioTotal == null) {
+			txtFieldPrecioTotal = new JTextField();
+			txtFieldPrecioTotal.setHorizontalAlignment(SwingConstants.CENTER);
+			txtFieldPrecioTotal.setEditable(false);
+			txtFieldPrecioTotal.setBounds(103, 221, 115, 20);
+			txtFieldPrecioTotal.setColumns(10);
+			txtFieldPrecioTotal.setText(vP.getPedido().calcularTotalConIva()+"");
+		}
+		return txtFieldPrecioTotal;
+	}
+	
+	public VentanaRegistro getVentanaRegistro()
+	{
+		return vR;
+	}
+}

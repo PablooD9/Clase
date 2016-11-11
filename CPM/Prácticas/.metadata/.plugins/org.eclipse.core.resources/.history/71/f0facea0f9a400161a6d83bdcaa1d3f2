@@ -1,0 +1,160 @@
+package igu;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JSeparator;
+import javax.swing.UIManager;
+
+import com.jtattoo.plaf.hifi.HiFiLookAndFeel;
+
+public class VentanaPrincipal extends JFrame {
+
+	private JPanel contentPane;
+	private JMenuBar menuBar;
+	private JMenu mnFile;
+	private JMenu mnPlay;
+	private JMenu mnOptions;
+	private JMenu mnHelp;
+	private JMenuItem itOpen;
+	private JMenuItem itExit;
+	private JSeparator separator;
+	private JMenuItem itNext;
+	private JMenuItem itRandom;
+	private JMenuItem itContents;
+	private JSeparator separator_1;
+	private JMenuItem itAbout;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					UIManager.setLookAndFeel("com.jtattoo.plaf.hifi.HiFiLookAndFeel");
+					VentanaPrincipal frame = new VentanaPrincipal();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public VentanaPrincipal() {
+		setTitle("EII Media Player");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 652, 419);
+		setJMenuBar(getMenuBar_1());
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setLayout(new BorderLayout(0, 0));
+		setContentPane(contentPane);
+		setLocationRelativeTo(null);
+	}
+
+	private JMenuBar getMenuBar_1() {
+		if (menuBar == null) {
+			menuBar = new JMenuBar();
+			menuBar.add(getMnFile());
+			menuBar.add(getMnPlay());
+			menuBar.add(getMnOptions());
+			menuBar.add(getMnHelp());
+		}
+		return menuBar;
+	}
+	private JMenu getMnFile() {
+		if (mnFile == null) {
+			mnFile = new JMenu("File");
+			mnFile.setMnemonic('F');
+			mnFile.add(getItOpen());
+			mnFile.add(getSeparator());
+			mnFile.add(getItExit());
+		}
+		return mnFile;
+	}
+	private JMenu getMnPlay() {
+		if (mnPlay == null) {
+			mnPlay = new JMenu("Play");
+			mnPlay.setMnemonic('P');
+			mnPlay.add(getItNext());
+		}
+		return mnPlay;
+	}
+	private JMenu getMnOptions() {
+		if (mnOptions == null) {
+			mnOptions = new JMenu("Options");
+			mnOptions.setMnemonic('O');
+			mnOptions.add(getItRandom());
+		}
+		return mnOptions;
+	}
+	private JMenu getMnHelp() {
+		if (mnHelp == null) {
+			mnHelp = new JMenu("Help");
+			mnHelp.setMnemonic('H');
+			mnHelp.add(getItContents());
+			mnHelp.add(getSeparator_1());
+			mnHelp.add(getItAbout());
+		}
+		return mnHelp;
+	}
+	private JMenuItem getItOpen() {
+		if (itOpen == null) {
+			itOpen = new JMenuItem("Open");
+		}
+		return itOpen;
+	}
+	private JMenuItem getItExit() {
+		if (itExit == null) {
+			itExit = new JMenuItem("Exit");
+		}
+		return itExit;
+	}
+	private JSeparator getSeparator() {
+		if (separator == null) {
+			separator = new JSeparator();
+		}
+		return separator;
+	}
+	private JMenuItem getItNext() {
+		if (itNext == null) {
+			itNext = new JMenuItem("Next");
+		}
+		return itNext;
+	}
+	private JMenuItem getItRandom() {
+		if (itRandom == null) {
+			itRandom = new JMenuItem("Random");
+		}
+		return itRandom;
+	}
+	private JMenuItem getItContents() {
+		if (itContents == null) {
+			itContents = new JMenuItem("Contents");
+		}
+		return itContents;
+	}
+	private JSeparator getSeparator_1() {
+		if (separator_1 == null) {
+			separator_1 = new JSeparator();
+		}
+		return separator_1;
+	}
+	private JMenuItem getItAbout() {
+		if (itAbout == null) {
+			itAbout = new JMenuItem("About");
+		}
+		return itAbout;
+	}
+}

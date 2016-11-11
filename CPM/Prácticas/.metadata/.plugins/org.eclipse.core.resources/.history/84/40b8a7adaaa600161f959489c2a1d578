@@ -1,0 +1,155 @@
+package logica;
+
+import java.util.Random;
+
+
+public class Carrera {
+
+	private Corredor liebre;
+	private Corredor tortuga;
+	private Corredor corredorActivo;
+	private int numeroDado;
+	private final static int numArbolesPrincipio= 2;
+	private final static int numCasillasPrincipio= 11;
+	private int numeroCasillas= 0;
+
+	public Carrera() {
+		inicializarJuego(numArbolesPrincipio, numCasillasPrincipio);
+	}
+	
+//	public void inicializarJuego(int numCasillas) {
+//		Random random= new Random();
+//		boolean calleElegida= random.nextBoolean();
+//
+//		if (calleElegida)
+//		{
+//			liebre = new Corredor(new Calle(true, true, numCasillas),"liebre","liebre.jpg",4);
+//			tortuga = new Corredor(new Calle(false, false, numCasillas),"tortuga","tortuga.jpg",2);
+//		}
+//		
+//		else
+//		{
+//			liebre = new Corredor(new Calle(false, true, numCasillas),"liebre","liebre.jpg",4);
+//			tortuga = new Corredor(new Calle(true, false, numCasillas),"tortuga","tortuga.jpg",2);
+//		}
+//		
+//		numeroDado = 0;
+//		// Establecemos el corredor activo apuntando a la tortuga ya que sale la primera
+//		this.setCorredorActivo(tortuga);
+//	}
+
+	public void inicializarJuego(int numArboles, int numCasillas) {
+		Random random= new Random();
+		boolean calleElegida= random.nextBoolean();
+		numeroCasillas= numCasillas;
+		
+		if (calleElegida)
+		{
+			liebre = new Corredor(new Calle(true, true, numArboles, numCasillas),"liebre","liebre.jpg",4);
+			tortuga = new Corredor(new Calle(false, false, 0, numCasillas),"tortuga","tortuga.jpg",2);
+		}
+		
+		else
+		{
+			liebre = new Corredor(new Calle(false, true, numArboles, numCasillas),"liebre","liebre.jpg",4);
+			tortuga = new Corredor(new Calle(true, false, 0, numCasillas),"tortuga","tortuga.jpg",2);
+		}
+		
+		numeroDado = 0;
+		// Establecemos el corredor activo apuntando a la tortuga ya que sale la primera
+		this.setCorredorActivo(tortuga);
+	}
+
+	public boolean lanzarDado() {
+		boolean isPosible = false;
+		numeroDado = Dado.lanzar(getCorredorActivo());
+		if (corredorActivo.getPosicion() + numeroDado < corredorActivo.getCalleAsignada().numCasillas())
+			isPosible = true;
+		else {
+			cambiarTurnos();
+		}
+		return isPosible;
+	}
+
+	private boolean isJugadaCorrecta(int i) {
+		return (corredorActivo.getPosicion() + numeroDado >= i);
+	}
+
+	public boolean resolverJugada(int i) {
+		boolean resuelta = false;
+		// Comprobamos que se trata de avanzar a la casilla correcta
+		if (isJugadaCorrecta (i)){
+			corredorActivo.setPosicion(corredorActivo.getPosicion() + i - 1);
+			// Incrementamos la puntuación del corredor
+			corredorActivo.incrementaPuntuacion(corredorActivo.getCalleAsignada().puntosCasilla(corredorActivo.getPosicion()));
+			// Intercambiamos los turnos
+			if (corredorActivo.getCalleAsignada().getCasilla(i).hasTree())
+			{
+				corredorActivo.dormir();
+			}
+			cambiarTurnos();
+			resuelta = true;
+		}
+		return resuelta;
+	}
+
+	public Corredor getCorredorActivo() {
+		return corredorActivo;
+	}
+
+	public Corredor getCorredorNoActivo() {
+		if (corredorActivo == liebre) {
+			return tortuga;
+		}
+		return liebre;
+	}
+
+	private void cambiarTurnos() {
+		// Cambiamos el turno
+		if (getCorredorNoActivo().getIsSleeping())
+		{
+			getCorredorNoActivo().despertar();
+		}
+		else
+		{
+			corredorActivo = getCorredorNoActivo();
+		}
+	}
+
+	public boolean isPartidaFinalizada() {
+		return (liebre.getPosicion() == liebre.getCalleAsignada().getPosMeta() || tortuga.getPosicion() == tortuga.getCalleAsignada().getPosMeta() ||
+				 liebre.getCalleAsignada().getBlackHole() == liebre.getPosicion() || tortuga.getCalleAsignada().getBlackHole() == tortuga.getPosicion());
+//		return (liebre.getPosicion() == liebre.getCalleAsignada().numCasillas()-1 || tortuga.getPosicion() == tortuga.getCalleAsignada().numCasillas()-1 ||
+//				 liebre.getCalleAsignada().getBlackHole() == liebre.getPosicion() || tortuga.getCalleAsignada().getBlackHole() == tortuga.getPosicion());
+	}
+
+	public int getNumeroDado() {
+		return numeroDado;
+	}
+
+	public Corredor getLiebre() {
+		return liebre;
+	}
+
+	public Corredor getTortuga() {
+		return tortuga;
+	}
+
+	private void setCorredorActivo(Corredor corredorActivo) {
+		this.corredorActivo = corredorActivo;
+	}
+	
+	public boolean esCorredorActivo(Corredor corredor)
+	{
+		if (corredor.getNombre().equals(getCorredorActivo().getNombre()))
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	public int getNumCasillas()
+	{
+		return numeroCasillas;
+	}
+}

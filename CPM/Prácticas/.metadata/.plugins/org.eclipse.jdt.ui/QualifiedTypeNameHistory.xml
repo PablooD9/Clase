@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="javax.swing.JFrame"/>
+<fullyQualifiedTypeName name="javax.swing.JPanel"/>
+<fullyQualifiedTypeName name="java.awt.Color"/>
+<fullyQualifiedTypeName name="javax.swing.JLabel"/>
+<fullyQualifiedTypeName name="javax.swing.JTextField"/>
+<fullyQualifiedTypeName name="java.util.Arrays"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="java.io.BufferedReader"/>
+<fullyQualifiedTypeName name="java.io.FileReader"/>
+<fullyQualifiedTypeName name="java.io.IOException"/>
+<fullyQualifiedTypeName name="logica.Catalogo"/>
+<fullyQualifiedTypeName name="org.jvnet.substance.SubstanceLookAndFeel"/>
+<fullyQualifiedTypeName name="logica.Articulo"/>
+<fullyQualifiedTypeName name="igu.VentanaPrincipal"/>
+<fullyQualifiedTypeName name="igu.VentanaRegistro"/>
+<fullyQualifiedTypeName name="logica.Pedido"/>
+<fullyQualifiedTypeName name="igu.VentanaConfirmacion"/>
+<fullyQualifiedTypeName name="java.awt.Component"/>
+<fullyQualifiedTypeName name="igu.VentanaPrincipal.ProcesaBoton"/>
+<fullyQualifiedTypeName name="logica.Corredor"/>
+<fullyQualifiedTypeName name="java.util.Random"/>
+<fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
+<fullyQualifiedTypeName name="java.awt.event.FocusAdapter"/>
+<fullyQualifiedTypeName name="java.awt.event.FocusEvent"/>
+<fullyQualifiedTypeName name="javax.swing.JDialog"/>
+<fullyQualifiedTypeName name="javax.swing.JButton"/>
+<fullyQualifiedTypeName name="javax.swing.UIManager"/>
+<fullyQualifiedTypeName name="java.util.Properties"/>
+<fullyQualifiedTypeName name="java.awt.Image"/>
+</qualifiedTypeNameHistroy>

@@ -1,0 +1,150 @@
+package logica;
+
+import java.util.Random;
+
+public class Calle {
+
+	public static int DIM = 11;
+	public static final int POSICION_META = DIM -1;
+	private Casilla[] casillas = new Casilla[DIM];
+	private int blackHole= 0;
+	private boolean hasBlackHole;
+	private int numCasillas= 0;
+
+	public Calle (boolean isBlackHole, boolean isTree) {
+		for (int i = 0; i < DIM; i++)
+		{
+			casillas[i] = new Casilla();
+		}
+		
+		if (isTree)
+		{
+			colocarArbol();
+			colocarArbol();
+		}
+		
+		if (isBlackHole)
+		{
+			hasBlackHole= true;
+			blackHole= drawBlackHole();
+		}
+		
+		else
+		{
+			blackHole= -1;
+			hasBlackHole= false;
+		}
+	}
+	
+	public Calle (boolean isBlackHole, boolean isTree, int numCasillas) {
+		DIM= numCasillas;
+		for (int i = 0; i < numCasillas; i++)
+		{
+			casillas[i] = new Casilla();
+		}
+		
+		if (isTree)
+		{
+			colocarArbol();
+			colocarArbol();
+		}
+		
+		if (isBlackHole)
+		{
+			hasBlackHole= true;
+			blackHole= drawBlackHole();
+		}
+		
+		else
+		{
+			blackHole= -1;
+			hasBlackHole= false;
+		}
+	}
+	
+	public Calle()
+	{
+		for (int i = 0; i < DIM; i++)
+		{
+			casillas[i] = new Casilla();
+		}
+	}
+	
+	public Casilla[] getCasillas()
+	{
+		return casillas;
+	}
+
+	public int puntosCasilla(int posicion) {
+		return casillas[posicion].getValor();
+	}
+	
+	public Casilla getCasilla(int posicion) {
+		return casillas[posicion];
+	}
+	
+	public int numCasillas()
+	{
+		return casillas.length;
+	}
+	
+	private void colocarArbol()
+	{
+		int columna = 0;
+		int semilla= DIM - 2;
+		
+		if (numCasillas != 0)
+		{
+			semilla= numCasillas - 2;
+		}
+		
+		do 
+		{
+			columna= ((int) (Math.random() * semilla)) + 1;
+		} while (casillas[columna].hasTree());
+		casillas[columna].setTree(true);
+	}
+	
+	public int getBlackHole()
+	{
+		return blackHole;
+	}
+	
+	private int drawBlackHole()
+	{
+		if (hasBlackHole)
+		{
+			Random random= new Random();
+			blackHole= random.nextInt(POSICION_META);
+			
+			if (numCasillas != 0)
+			{
+				blackHole= random.nextInt(numCasillas - 1);
+			}
+			
+			if (blackHole == 0)
+			{
+				blackHole += 1;
+			}
+	
+			for (int i=0; i< casillas.length; i++)
+			{
+				if (i == blackHole)
+				{
+					if (casillas[i].hasTree())
+					{
+						return drawBlackHole();
+					}
+					
+					else
+					{
+						casillas[i].setBlackHole(true);
+						return blackHole;
+					}
+				}
+			}
+			return -1;
+		}
+		return -1;
+	}
+}

@@ -1,0 +1,799 @@
+package igu;
+
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+
+import java.awt.Toolkit;
+import java.awt.Color;
+
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JSeparator;
+import javax.swing.KeyStroke;
+
+import java.awt.event.KeyEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+import javax.swing.border.LineBorder;
+
+import java.awt.GridLayout;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.ImageIcon;
+import javax.swing.JTextField;
+
+import java.awt.Font;
+
+import javax.swing.SwingConstants;
+
+import logica.*;
+
+public class VentanaPrincipal extends JFrame {
+
+	private JPanel contentPane;
+	private JMenuBar menuBar;
+	private JMenu mnJuego;
+	private JMenu mnAyuda;
+	private JMenuItem itnuevo;
+	private JMenuItem itSalir;
+	private JMenuItem itContenidos;
+	private JMenuItem itAcercaDe;
+	private JSeparator separator;
+	private JSeparator separator_1;
+	private JPanel pnLiebre;
+	private JButton bt10_liebre;
+	private JButton bt9_liebre;
+	private JButton bt8_liebre;
+	private JButton bt7_liebre;
+	private JButton bt6_liebre;
+	private JButton bt5_liebre;
+	private JButton bt4_liebre;
+	private JButton bt3_liebre;
+	private JButton bt2_liebre;
+	private JButton bt1_liebre;
+	private JButton bt0_liebre;
+	private JPanel pnTortuga;
+	private JButton bt0_tortuga;
+	private JButton bt1_tortuga;
+	private JButton bt2_tortuga;
+	private JButton bt3_tortuga;
+	private JButton bt4_tortuga;
+	private JButton bt5_tortuga;
+	private JButton bt6_tortuga;
+	private JButton bt7_tortuga;
+	private JButton bt8_tortuga;
+	private JButton bt9_tortuga;
+	private JButton bt10_tortuga;
+	private JLabel lbTortuga;
+	private JButton btDado;
+	private JTextField txDado;
+	private JLabel lbScore;
+	private JLabel lbLiebrePequeña;
+	private JLabel lbTortugaPequeña;
+	private JTextField txPuntosLiebre;
+	private JTextField txtPuntosTortuga;
+	private Carrera carrera;
+	private JLabel lbLiebre;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					VentanaPrincipal frame = new VentanaPrincipal();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public VentanaPrincipal() 
+	{
+		carrera= new Carrera();
+		setResizable(false);
+		setIconImage(Toolkit.getDefaultToolkit().getImage(VentanaPrincipal.class.getResource("/img/liebre.JPG")));
+		setTitle("La Liebre y la Tortuga");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 900, 400);
+		setJMenuBar(getMenuBar_1());
+		contentPane = new JPanel();
+		contentPane.setBackground(Color.BLACK);
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		contentPane.add(getPnLiebre());
+		contentPane.add(getPnTortuga());
+		contentPane.add(getLbTortuga());
+		contentPane.add(getBtDado());
+		contentPane.add(getTxDado());
+		contentPane.add(getLbScore());
+		contentPane.add(getLabel_1());
+		contentPane.add(getLabel_2());
+		contentPane.add(getTxPuntosLiebre());
+		contentPane.add(getTxtPuntosTortuga());
+		setLocationRelativeTo(null);
+		modificarPanel(pnLiebre, false);
+		modificarPanel(pnTortuga, false);
+		contentPane.add(getLbLiebre());
+		
+	}
+	private JMenuBar getMenuBar_1() {
+		if (menuBar == null) {
+			menuBar = new JMenuBar();
+			menuBar.add(getMnJuego());
+			menuBar.add(getMnAyuda());
+		}
+		return menuBar;
+	}
+	private JMenu getMnJuego() {
+		if (mnJuego == null) {
+			mnJuego = new JMenu("Juego");
+			mnJuego.setMnemonic('J');
+			mnJuego.add(getItnuevo());
+			mnJuego.add(getSeparator());
+			mnJuego.add(getItSalir());
+		}
+		return mnJuego;
+	}
+	private JMenu getMnAyuda() {
+		if (mnAyuda == null) {
+			mnAyuda = new JMenu("Ayuda");
+			mnAyuda.setMnemonic('A');
+			mnAyuda.add(getItContenidos());
+			mnAyuda.add(getSeparator_1());
+			mnAyuda.add(getItAcercaDe());
+		}
+		return mnAyuda;
+	}
+	private JMenuItem getItnuevo() {
+		if (itnuevo == null) {
+			itnuevo = new JMenuItem("Nuevo");
+			itnuevo.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					inicializar();
+				}
+			});
+			itnuevo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK));
+			itnuevo.setMnemonic('N');
+		}
+		return itnuevo;
+	}
+	private JMenuItem getItSalir() {
+		if (itSalir == null) {
+			itSalir = new JMenuItem("Salir");
+			itSalir.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					System.exit(0);
+				}
+			});
+			itSalir.setMnemonic('S');
+		}
+		return itSalir;
+	}
+	private JMenuItem getItContenidos() {
+		if (itContenidos == null) {
+			itContenidos = new JMenuItem("Contenidos");
+			itContenidos.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					JOptionPane.showMessageDialog(null, "Ayuda no disponible demomento", "Contenidos de la ayuda", 1);
+				}
+			});
+			itContenidos.setMnemonic('C');
+		}
+		return itContenidos;
+	}
+	private JMenuItem getItAcercaDe() {
+		if (itAcercaDe == null) {
+			itAcercaDe = new JMenuItem("Acerca de");
+			itAcercaDe.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					mostrarAcercaDe();
+				}
+			});
+			itAcercaDe.setMnemonic('D');
+		}
+		return itAcercaDe;
+	}
+	
+	private void mostrarAcercaDe()
+	{
+		JOptionPane.showMessageDialog(this, "Juego de la liebre y la tortuga V1.0 \n Comunicación Persona-Máquina \n E.I.Informática Oviedo",
+				"Acerca del juego de la Liebre y la Tortuga", 1);
+	}
+	
+	private JSeparator getSeparator() {
+		if (separator == null) {
+			separator = new JSeparator();
+		}
+		return separator;
+	}
+	private JSeparator getSeparator_1() {
+		if (separator_1 == null) {
+			separator_1 = new JSeparator();
+		}
+		return separator_1;
+	}
+	private JPanel getPnLiebre() {
+		if (pnLiebre == null) {
+			pnLiebre = new JPanel();
+			pnLiebre.setBackground(Color.BLUE);
+			pnLiebre.setBorder(new LineBorder(Color.BLUE, 10));
+			pnLiebre.setBounds(95, 111, 775, 58);
+			pnLiebre.setLayout(new GridLayout(0, 11, 0, 0));
+			pnLiebre.add(getBt0_liebre());
+			pnLiebre.add(getBt1_liebre());
+			pnLiebre.add(getBt2_liebre());
+			pnLiebre.add(getBt3_liebre());
+			pnLiebre.add(getBt4_liebre());
+			pnLiebre.add(getBt5_liebre());
+			pnLiebre.add(getBt6_liebre());
+			pnLiebre.add(getBt7_liebre());
+			pnLiebre.add(getBt8_liebre());
+			pnLiebre.add(getBt9_liebre());
+			pnLiebre.add(getBt10_liebre());
+		}
+		return pnLiebre;
+	}
+	private JButton getBt10_liebre() {
+		if (bt10_liebre == null) {
+			bt10_liebre = new JButton("");
+			bt10_liebre.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					jugar(10);
+				}
+			});
+			bt10_liebre.setBackground(Color.BLACK);
+		}
+		return bt10_liebre;
+	}
+	private JButton getBt9_liebre() {
+		if (bt9_liebre == null) {
+			bt9_liebre = new JButton("");
+			bt9_liebre.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					jugar(9);
+				}
+			});
+			bt9_liebre.setBackground(Color.BLACK);
+		}
+		return bt9_liebre;
+	}
+	private JButton getBt8_liebre() {
+		if (bt8_liebre == null) {
+			bt8_liebre = new JButton("");
+			bt8_liebre.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					jugar(8);
+				}
+			});
+			bt8_liebre.setBackground(Color.BLACK);
+		}
+		return bt8_liebre;
+	}
+	private JButton getBt7_liebre() {
+		if (bt7_liebre == null) {
+			bt7_liebre = new JButton("");
+			bt7_liebre.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					jugar(7);
+				}
+			});
+			bt7_liebre.setBackground(Color.BLACK);
+		}
+		return bt7_liebre;
+	}
+	private JButton getBt6_liebre() {
+		if (bt6_liebre == null) {
+			bt6_liebre = new JButton("");
+			bt6_liebre.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					jugar(6);
+				}
+			});
+			bt6_liebre.setBackground(Color.BLACK);
+		}
+		return bt6_liebre;
+	}
+	private JButton getBt5_liebre() {
+		if (bt5_liebre == null) {
+			bt5_liebre = new JButton("");
+			bt5_liebre.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					jugar(5);
+				}
+			});
+			bt5_liebre.setBackground(Color.BLACK);
+		}
+		return bt5_liebre;
+	}
+	private JButton getBt4_liebre() {
+		if (bt4_liebre == null) {
+			bt4_liebre = new JButton("");
+			bt4_liebre.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					jugar(4);
+				}
+			});
+			bt4_liebre.setBackground(Color.BLACK);
+		}
+		return bt4_liebre;
+	}
+	private JButton getBt3_liebre() {
+		if (bt3_liebre == null) {
+			bt3_liebre = new JButton("");
+			bt3_liebre.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					jugar(3);
+				}
+			});
+			bt3_liebre.setBackground(Color.BLACK);
+		}
+		return bt3_liebre;
+	}
+	private JButton getBt2_liebre() {
+		if (bt2_liebre == null) {
+			bt2_liebre = new JButton("");
+			bt2_liebre.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					jugar(2);
+				}
+			});
+			bt2_liebre.setBackground(Color.BLACK);
+		}
+		return bt2_liebre;
+	}
+	private JButton getBt1_liebre() {
+		if (bt1_liebre == null) {
+			bt1_liebre = new JButton("");
+			bt1_liebre.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					jugar(1);
+				}
+			});
+			bt1_liebre.setBackground(Color.BLACK);
+		}
+		return bt1_liebre;
+	}
+	private JButton getBt0_liebre() {
+		if (bt0_liebre == null) {
+			bt0_liebre = new JButton("");
+			bt0_liebre.setDisabledIcon(new ImageIcon(VentanaPrincipal.class.getResource("/img/liebre.JPG")));
+			bt0_liebre.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/img/liebre.JPG")));
+			bt0_liebre.setBackground(Color.BLACK);
+		}
+		return bt0_liebre;
+	}
+	private JPanel getPnTortuga() {
+		if (pnTortuga == null) {
+			pnTortuga = new JPanel();
+			pnTortuga.setBorder(new LineBorder(Color.BLUE, 10));
+			pnTortuga.setBackground(Color.BLUE);
+			pnTortuga.setBounds(95, 172, 775, 58);
+			pnTortuga.setLayout(new GridLayout(0, 11, 0, 0));
+			pnTortuga.add(getBt0_tortuga());
+			pnTortuga.add(getBt1_tortuga());
+			pnTortuga.add(getBt2_tortuga());
+			pnTortuga.add(getBt3_tortuga());
+			pnTortuga.add(getBt4_tortuga());
+			pnTortuga.add(getBt5_tortuga());
+			pnTortuga.add(getBt6_tortuga());
+			pnTortuga.add(getBt7_tortuga());
+			pnTortuga.add(getBt8_tortuga());
+			pnTortuga.add(getBt9_tortuga());
+			pnTortuga.add(getBt10_tortuga());
+		}
+		return pnTortuga;
+	}
+	private JButton getBt0_tortuga() {
+		if (bt0_tortuga == null) {
+			bt0_tortuga = new JButton("");
+			bt0_tortuga.setDisabledIcon(new ImageIcon(VentanaPrincipal.class.getResource("/img/tortuga.JPG")));
+			bt0_tortuga.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/img/tortuga.JPG")));
+			bt0_tortuga.setBackground(Color.BLACK);
+		}
+		return bt0_tortuga;
+	}
+	private JButton getBt1_tortuga() {
+		if (bt1_tortuga == null) {
+			bt1_tortuga = new JButton("");
+			bt1_tortuga.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					jugar(1);
+				}
+			});
+			bt1_tortuga.setBackground(Color.BLACK);
+		}
+		return bt1_tortuga;
+	}
+	private JButton getBt2_tortuga() {
+		if (bt2_tortuga == null) {
+			bt2_tortuga = new JButton("");
+			bt2_tortuga.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					jugar(2);
+				}
+			});
+			bt2_tortuga.setBackground(Color.BLACK);
+		}
+		return bt2_tortuga;
+	}
+	private JButton getBt3_tortuga() {
+		if (bt3_tortuga == null) {
+			bt3_tortuga = new JButton("");
+			bt3_tortuga.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					jugar(3);
+				}
+			});
+			bt3_tortuga.setBackground(Color.BLACK);
+		}
+		return bt3_tortuga;
+	}
+	private JButton getBt4_tortuga() {
+		if (bt4_tortuga == null) {
+			bt4_tortuga = new JButton("");
+			bt4_tortuga.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					jugar(4);
+				}
+			});
+			bt4_tortuga.setBackground(Color.BLACK);
+		}
+		return bt4_tortuga;
+	}
+	private JButton getBt5_tortuga() {
+		if (bt5_tortuga == null) {
+			bt5_tortuga = new JButton("");
+			bt5_tortuga.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					jugar(5);
+				}
+			});
+			bt5_tortuga.setBackground(Color.BLACK);
+		}
+		return bt5_tortuga;
+	}
+	private JButton getBt6_tortuga() {
+		if (bt6_tortuga == null) {
+			bt6_tortuga = new JButton("");
+			bt6_tortuga.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					jugar(6);
+				}
+			});
+			bt6_tortuga.setBackground(Color.BLACK);
+		}
+		return bt6_tortuga;
+	}
+	private JButton getBt7_tortuga() {
+		if (bt7_tortuga == null) {
+			bt7_tortuga = new JButton("");
+			bt7_tortuga.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					jugar(7);
+				}
+			});
+			bt7_tortuga.setBackground(Color.BLACK);
+		}
+		return bt7_tortuga;
+	}
+	private JButton getBt8_tortuga() {
+		if (bt8_tortuga == null) {
+			bt8_tortuga = new JButton("");
+			bt8_tortuga.setBackground(Color.BLACK);
+			bt8_tortuga.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					jugar(8);
+				}
+			});
+		}
+		return bt8_tortuga;
+	}
+	private JButton getBt9_tortuga() {
+		if (bt9_tortuga == null) {
+			bt9_tortuga = new JButton("");
+			bt9_tortuga.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					jugar(9);
+				}
+			});
+			bt9_tortuga.setBackground(Color.BLACK);
+		}
+		return bt9_tortuga;
+	}
+	private JButton getBt10_tortuga() {
+		if (bt10_tortuga == null) {
+			bt10_tortuga = new JButton("");
+			bt10_tortuga.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					jugar(10);
+				}
+			});
+			bt10_tortuga.setBackground(Color.BLACK);
+		}
+		return bt10_tortuga;
+	}
+	private JLabel getLbTortuga() {
+		if (lbTortuga == null) {
+			lbTortuga = new JLabel("");
+			lbTortuga.setVisible(false);
+			lbTortuga.setHorizontalAlignment(SwingConstants.CENTER);
+			lbTortuga.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/img/flecha.png")));
+			lbTortuga.setBounds(36, 184, 51, 33);
+		}
+		return lbTortuga;
+	}
+	private JButton getBtDado() {
+		if (btDado == null) {
+			btDado = new JButton("");
+			btDado.setDisabledIcon(new ImageIcon(VentanaPrincipal.class.getResource("/img/dado.JPG")));
+			btDado.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e)
+				{
+					if(carrera.lanzarDado())
+					{
+						int numero= carrera.getNumeroDado();
+						txDado.setText(String.valueOf(numero));
+						habilitarPanelCorredorActivo(carrera.getCorredorActivo());
+						habilitarFlechaCorredorActivo(carrera.getCorredorActivo());
+						btDado.setEnabled(false);
+					}
+					else
+					{
+						txDado.setText(String.valueOf(carrera.getNumeroDado())); // Para ver que el número salido en
+																				// el dado es erróneo.
+						JOptionPane.showMessageDialog(null, "La jugada no es posible");
+						deshabilitarPaneles();
+						txDado.setText("");
+					}
+				}
+			});
+			btDado.setToolTipText("Haga click para lanzar el dado");
+			btDado.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/img/dado.JPG")));
+			btDado.setContentAreaFilled(false);
+			btDado.setBorderPainted(false);
+			btDado.setBackground(Color.BLACK);
+			btDado.setBounds(36, 11, 61, 89);
+		}
+		return btDado;
+	}
+	private JTextField getTxDado() {
+		if (txDado == null) {
+			txDado = new JTextField();
+			txDado.setText("0");
+			txDado.setBorder(null);
+			txDado.setHorizontalAlignment(SwingConstants.CENTER);
+			txDado.setFont(new Font("Sylfaen", Font.PLAIN, 60));
+			txDado.setForeground(Color.GREEN);
+			txDado.setBackground(Color.BLACK);
+			txDado.setEditable(false);
+			txDado.setBounds(135, 11, 138, 63);
+			txDado.setColumns(10);
+		}
+		return txDado;
+	}
+	private JLabel getLbScore() {
+		if (lbScore == null) {
+			lbScore = new JLabel("Score");
+			lbScore.setHorizontalAlignment(SwingConstants.CENTER);
+			lbScore.setForeground(Color.YELLOW);
+			lbScore.setFont(new Font("Jokerman", Font.PLAIN, 40));
+			lbScore.setBounds(366, 4, 172, 74);
+		}
+		return lbScore;
+	}
+	private JLabel getLabel_1() {
+		if (lbLiebrePequeña == null) {
+			lbLiebrePequeña = new JLabel("");
+			lbLiebrePequeña.setHorizontalAlignment(SwingConstants.CENTER);
+			lbLiebrePequeña.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/img/liebre_peq.JPG")));
+			lbLiebrePequeña.setBounds(561, 11, 57, 33);
+		}
+		return lbLiebrePequeña;
+	}
+	private JLabel getLabel_2() {
+		if (lbTortugaPequeña == null) {
+			lbTortugaPequeña = new JLabel("");
+			lbTortugaPequeña.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/img/tortuga_peq.JPG")));
+			lbTortugaPequeña.setHorizontalAlignment(SwingConstants.CENTER);
+			lbTortugaPequeña.setBounds(566, 45, 45, 33);
+		}
+		return lbTortugaPequeña;
+	}
+	private JTextField getTxPuntosLiebre() {
+		if (txPuntosLiebre == null) {
+			txPuntosLiebre = new JTextField();
+			txPuntosLiebre.setEditable(false);
+			txPuntosLiebre.setHorizontalAlignment(SwingConstants.CENTER);
+			txPuntosLiebre.setText("0");
+			txPuntosLiebre.setFont(new Font("Arial", Font.PLAIN, 24));
+			txPuntosLiebre.setForeground(Color.MAGENTA);
+			txPuntosLiebre.setBackground(Color.BLACK);
+			txPuntosLiebre.setBounds(612, 17, 147, 20);
+			txPuntosLiebre.setColumns(10);
+		}
+		return txPuntosLiebre;
+	}
+	private JTextField getTxtPuntosTortuga() {
+		if (txtPuntosTortuga == null) {
+			txtPuntosTortuga = new JTextField();
+			txtPuntosTortuga.setEditable(false);
+			txtPuntosTortuga.setText("0");
+			txtPuntosTortuga.setHorizontalAlignment(SwingConstants.CENTER);
+			txtPuntosTortuga.setForeground(Color.MAGENTA);
+			txtPuntosTortuga.setFont(new Font("Arial", Font.PLAIN, 24));
+			txtPuntosTortuga.setColumns(10);
+			txtPuntosTortuga.setBackground(Color.BLACK);
+			txtPuntosTortuga.setBounds(612, 52, 147, 20);
+		}
+		return txtPuntosTortuga;
+	}
+	
+	private void modificarPanel(JPanel panel, boolean habilitado)
+	{
+		Component[] botones= panel.getComponents(); //útil para evaluar muchos componentes dentro de un contenedor.
+		for (int i=0; i< botones.length; i++)
+		{
+			JButton boton= (JButton) botones[i];
+			boton.setEnabled(habilitado);
+		}
+	}
+	
+	private void habilitarPanelCorredorActivo(Corredor corredor)
+	{
+		if (corredor.getNombre().equals("liebre"))
+		{
+			modificarPanel(pnLiebre, true);
+		}
+		else if (corredor.getNombre().equals("tortuga"))
+		{
+			modificarPanel(pnTortuga, true);
+		}
+	}
+	
+	private void habilitarFlechaCorredorActivo(Corredor corredor)
+	{
+		if (corredor.getNombre().equals("liebre"))
+		{
+			lbLiebre.setVisible(true);
+			lbTortuga.setVisible(false);
+		}
+		else if (corredor.getNombre().equals("tortuga"))
+		{
+			lbTortuga.setVisible(true);
+			lbLiebre.setVisible(false);
+		}
+	}
+	
+	private void deshabilitarPaneles()
+	{
+		modificarPanel(pnLiebre, false);
+		modificarPanel(pnTortuga, false);
+	}
+	
+	private void jugar(int i)
+	{
+		if (carrera.resolverJugada(i))
+		{
+			representarEstadoJuego();
+		}
+	}
+	
+	private void representarEstadoJuego()
+	{
+		pintarPuntos();
+		pintarCorredores();
+		deshabilitarPaneles();
+		if (carrera.isPartidaFinalizada())
+		{
+			String corredor= "";
+			if (carrera.getCorredorActivo().getNombre() == "liebre")
+			{
+				corredor= "tortuga";
+			}
+			
+			else
+			{
+				corredor= "liebre";
+			}
+			
+			JOptionPane.showMessageDialog(null, "Partida finalizada!\nEl ganador ha sido: " + corredor);
+			inicializar();
+		}
+		else
+		{
+			btDado.setEnabled(true);
+		}
+	}
+	
+	private void pintarPuntos()
+	{
+		txPuntosLiebre.setText(String.valueOf(carrera.getLiebre().getPuntuacion()));
+		txtPuntosTortuga.setText(String.valueOf(carrera.getTortuga().getPuntuacion()));
+	}
+	
+	private void pintarCalle(Corredor corredor,Component[] botones) {
+		ImageIcon imagen = new ImageIcon(getClass().getResource("/img/" + corredor.getFoto()));
+		for (int i=0; i<botones.length;i++)
+		{
+			  JButton boton = (JButton) botones[i];
+		      if (i == corredor.getPosicion()){
+		    	  boton.setIcon(imagen);
+		    	  boton.setDisabledIcon(imagen);
+		      }
+		      else
+		    	  boton.setIcon(null);         
+		}
+	}
+	
+	private void pintarCorredores()
+	{
+		pintarCalle(carrera.getLiebre(), pnLiebre.getComponents());
+		pintarCalle(carrera.getTortuga(), pnTortuga.getComponents());
+	}
+	
+	private void inicializar()
+	{
+		//parte lógica:
+		carrera.inicializarJuego();
+		//parte interfaz:
+		representarEstadoJuego();
+		txDado.setText("0");
+		lbLiebre.setVisible(false);
+		lbTortuga.setVisible(false);
+	}
+	
+	private JLabel getLbLiebre() {
+		if (lbLiebre == null) {
+			lbLiebre = new JLabel("");
+			lbLiebre.setVisible(false);
+			lbLiebre.setHorizontalAlignment(SwingConstants.CENTER);
+			lbLiebre.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/img/flecha.png")));
+			lbLiebre.setBounds(36, 125, 55, 33);
+		}
+		return lbLiebre;
+	}
+	
+	private JLabel getBlackHole(Corredor corredor)
+	{
+		ImageIcon imagen = new ImageIcon(getClass().getResource("/img/blackhole.png"));
+		Component[] casillas= null;
+		
+		if (corredor.getNombre() == "liebre")
+		{
+			casillas= pnLiebre.getComponents();
+		}
+		else
+		{
+			casillas= pnTortuga.getComponents();
+		}
+		
+		boolean holeFound= false;
+		for (int i=0; i<casillas.length;i++)
+		{
+			  JButton boton = (JButton) casillas[i];
+		      if (corredor.getCalleAsignada().getCasillas()[i].getIsBlackHole())
+		      {
+		    	  boton.setIcon(imagen);
+		    	  
+		      }
+		}
+	}
+}

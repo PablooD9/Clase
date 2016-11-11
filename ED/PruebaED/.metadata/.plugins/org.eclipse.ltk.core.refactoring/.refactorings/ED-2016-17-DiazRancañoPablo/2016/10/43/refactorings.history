@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename method &apos;arbolesUO251017.BSTree.addElNodo(...)&apos; to &apos;addRecursivo&apos;&#x0D;&#x0A;- Original project: &apos;ED-2016-17-DiazRancañoPablo&apos;&#x0D;&#x0A;- Original element: &apos;arbolesUO251017.BSTree.addElNodo(...)&apos;&#x0D;&#x0A;- Renamed element: &apos;arbolesUO251017.BSTree.addRecursivo(...)&apos;&#x0D;&#x0A;- Update references to refactored element" delegate="false" deprecate="false" description="Rename method &apos;addElNodo&apos;" flags="589826" id="org.eclipse.jdt.ui.rename.method" input="/src&lt;arbolesUO251017{BSTree.java[BSTree~addElNodo~QBSTNode\&lt;QT;&gt;;~QT;" name="addRecursivo" references="true" stamp="1477403241985" version="1.0"/>
+</session>

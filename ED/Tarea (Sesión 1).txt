@@ -1,0 +1,10 @@
+Hacer lo que hicimos en clase (con complejidad lineal, o sea O(n)), pero hacer también por complejidad cúbica (O(n^3))
+y por logarítmica
+
+public static void logarithmic(int n){
+for (int i=1; i<=n; i*=2)
+	doNothing();
+}
+
+public static vopid cubic(int n){
+for (int i=0; i<=n; i++)...

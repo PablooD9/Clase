@@ -1,0 +1,418 @@
+package arbolesUO251017;
+
+import static org.junit.Assert.*;
+
+import java.awt.event.ActionListener;
+
+import org.junit.Before;
+import org.junit.Test;
+
+public class testBSTree {
+	
+	private BSTree<Integer> arbol;
+	private Integer n0, n1, n2, n3, n4, n5, n6, n7, n8;
+	
+	@Before
+	public void setUp()
+	{
+		//Creación del árbol y de algunos nodos.
+		arbol= new BSTree<Integer>();
+		n0= 0;
+		n1= 1;
+		n2= 2;
+		n3= 3;
+		n4= 4;
+		n5= 5;
+		n6= 6;
+		n7= 7;
+		n8= 8;
+	}
+	
+//	@Test
+	public void testAdd()
+	{
+		//Se intenta añadir un valor null.
+		assertFalse(arbol.add(null));
+		
+		//Se añaden nodos al árbol.
+		assertTrue(arbol.add(n5));
+		assertTrue(arbol.add(n4));
+		assertTrue(arbol.add(n3));
+		assertTrue(arbol.add(n6));
+		assertTrue(arbol.add(n7));
+		assertTrue(arbol.add(n0));
+		assertTrue(arbol.add(n2));
+		assertTrue(arbol.add(n8));
+		
+		//Se comprueba que existen en el árbol (además, se puede ver por pantalla)
+		assertEquals(n5, arbol.search(n5));
+		assertEquals(n4, arbol.search(n4));
+		assertEquals(n3, arbol.search(n3));
+		assertEquals(n6, arbol.search(n6));
+		assertEquals(n7, arbol.search(n7));
+		assertEquals(n0, arbol.search(n0));
+		assertEquals(n2, arbol.search(n2));
+		assertEquals(n8, arbol.search(n8));
+		
+		System.out.println(arbol.toString());
+		
+		//En este punto, se intentan añadir nodos que ya existen en el árbol.
+		//En dicho caso, el nodo del árbol sustituirá su información (aunque es la misma) por la
+		//del nodo del parámetro.
+		Integer n3Prueba= 3;
+		Integer n0Prueba= 0;
+		Integer n8Prueba= 8;
+		assertTrue(arbol.add(n3Prueba));
+		assertTrue(arbol.add(n0Prueba));
+		assertTrue(arbol.add(n8Prueba));
+		
+		assertEquals(n3, arbol.search(n3Prueba)); 
+		assertEquals(n0, arbol.search(n0Prueba));
+		assertEquals(n8, arbol.search(n8Prueba)); //Se comprueba que nxPrueba coincide con nx.
+		
+		System.out.println(arbol.toString());
+	}
+	
+//	@Test
+	public void testSearch()
+	{
+		//Se intenta buscar un nodo null, o un nodo con el árbol vacío:
+		assertNull(arbol.search(null));
+		assertNull(arbol.search(n5));
+		
+		//Se añaden nodos al árbol
+		assertTrue(arbol.add(n5));
+		assertTrue(arbol.add(n8));
+		assertTrue(arbol.add(n3));
+		assertTrue(arbol.add(n1));
+		assertTrue(arbol.add(n0));
+		assertTrue(arbol.add(n7));
+		assertTrue(arbol.add(n2));
+		assertTrue(arbol.add(n4));
+		
+		//Se buscan dichos nodos añadidos:
+		assertEquals(n7, arbol.search(n7));
+		assertEquals(null, arbol.search(n6)); //n6 no está
+		assertEquals(n8, arbol.search(n8));
+		assertEquals(n5, arbol.search(n5));
+		assertEquals(n0, arbol.search(n0));
+		assertEquals(n3, arbol.search(n3));
+		assertEquals(n1, arbol.search(n1));
+		assertEquals(n7, arbol.search(n7));
+		assertEquals(n4, arbol.search(n4));
+		assertEquals(n2, arbol.search(n2));
+		
+		//Se crea un nodo, pero no se mete al árbol.
+		Integer n9= 9;
+		
+		assertEquals(null, arbol.search(n9));
+		
+		//Se borran nodos correctamente, y se comprueba que no los encuentra.
+		assertTrue(arbol.remove(n1));
+		assertTrue(arbol.remove(n7));
+		assertTrue(arbol.remove(n4));
+		assertTrue(arbol.remove(n2));
+		
+		assertEquals(null, arbol.search(n1));
+		assertEquals(null, arbol.search(n7));
+		assertEquals(null, arbol.search(n4));
+		assertEquals(null, arbol.search(n2));
+	}
+	
+//	@Test
+	public void testRemove()
+	{
+		//Intentamos borrar un nodo cuando no hay raíz (raiz==null) y un nodo null
+		assertFalse(arbol.remove(n0));
+		assertFalse(arbol.remove(null));
+		
+		//Creamos un árbol con muchos nodos
+		Integer n9= 9;
+		assertTrue(arbol.add(n6));
+		assertTrue(arbol.add(n8));
+		assertTrue(arbol.add(n7));
+		assertTrue(arbol.add(n9));
+		assertTrue(arbol.add(n1));
+		assertTrue(arbol.add(n0));
+		assertTrue(arbol.add(n5));
+		assertTrue(arbol.add(n3));
+		assertTrue(arbol.add(n2));
+		assertTrue(arbol.add(n4));
+		
+		Integer n10= 10;
+		
+		//Se intenta borrar un nodo que no está incluído en el árbol
+		assertFalse(arbol.remove(n10)); //Nodo NO incorporado al árbol.
+		
+		System.out.println(arbol.toString());
+		
+		//Borramos el nodo raíz (según el árbol creado, dicha raíz debería sustituírse por EL MAYOR DE LOS MENORES;
+		//esto es, en su subárbol izquierdo, el mayor). Debería copiarse el 5 en su lugar, y actualizar referencias.
+		assertTrue(arbol.remove(n6));
+		
+		System.out.println(arbol.toString());
+		
+		//Se intenta borrar de nuevo el mismo nodo de antes. Devuelve false porque ya no está en el árbol.
+		assertFalse(arbol.remove(n6));  //Borró correctamente el nodo 6, por lo que ya no existe.
+		
+		System.out.println(arbol.toString());
+		
+		//Se borra un nuevo nodo, para comprobar de nuevo que funciona.
+		assertTrue(arbol.remove(n8));
+		
+		System.out.println(arbol.toString());
+		
+		//Ahora, se borra uno a uno todos los nodos del árbol.
+		assertTrue(arbol.remove(n5));
+		assertTrue(arbol.remove(n7));
+		assertTrue(arbol.remove(n9));
+		assertTrue(arbol.remove(n1));
+		assertTrue(arbol.remove(n3));
+		assertTrue(arbol.remove(n0));
+		assertTrue(arbol.remove(n4));
+		assertTrue(arbol.remove(n2));
+		
+		System.out.println(arbol.toString());
+	}
+	
+//	@Test
+	public void test2Remove()
+	{ //Ejercicio página 19
+		Integer n9= 9;
+		Integer n11= 11;
+		assertTrue(arbol.add(n6));
+		assertTrue(arbol.add(n4));
+		assertTrue(arbol.add(n3));
+		assertTrue(arbol.add(n5));
+		assertTrue(arbol.add(n9));
+		assertTrue(arbol.add(n8));
+		assertTrue(arbol.add(n11));
+		assertTrue(arbol.add(n5));
+		
+		System.out.println(arbol.toString());
+		
+		assertTrue(arbol.remove(n6));
+		
+		System.out.println(arbol.toString());
+	}
+	
+//	@Test
+	public void testPreOrder()
+	{ //EJERCICIO PÁGINA 28 - APUNTES DE ÁRBOLES (MARTÍN)
+		// Se intenta mostrar el recorrido en preorden de un árbol vacío.
+		arbol.preOrder();
+		
+		//Se añaden nodos y se prueba el método.
+		assertTrue(arbol.add(n6));
+		assertTrue(arbol.add(n4));
+		assertTrue(arbol.add(n3));
+		assertTrue(arbol.add(n5));
+		Integer n12= 12;
+		assertTrue(arbol.add(n12));
+		Integer n9= 9;
+		assertTrue(arbol.add(n9));
+		Integer n15= 15;
+		assertTrue(arbol.add(n15));
+		Integer n11= 11;
+		assertTrue(arbol.add(n11));
+		assertTrue(arbol.add(n8));
+		
+		System.out.println(arbol.toString());
+		arbol.preOrder();
+	}
+	
+//	@Test
+	public void test2PreOrder(){
+		assertTrue(arbol.add(n8));
+		assertTrue(arbol.add(n6));
+		assertTrue(arbol.add(n4));
+		assertTrue(arbol.add(n0));
+		assertTrue(arbol.add(n5));
+		assertTrue(arbol.add(n2));
+		assertTrue(arbol.add(n1));
+		assertTrue(arbol.add(n3));
+		Integer n11= 11;
+		assertTrue(arbol.add(n11));
+		Integer n10= 10;
+		assertTrue(arbol.add(n10));
+		Integer n9= 9;
+		assertTrue(arbol.add(n9));
+		Integer n12= 12;
+		assertTrue(arbol.add(n12));
+		Integer n14= 14;
+		assertTrue(arbol.add(n14));
+		Integer n13= 13;
+		assertTrue(arbol.add(n13));
+		
+		System.out.println(arbol.toString());
+		arbol.preOrder();
+	}
+	
+//	@Test
+	public void test3PreOrder()
+	{
+		Integer n10= 10;
+		assertTrue(arbol.add(n10));
+		assertTrue(arbol.add(n6));
+		assertTrue(arbol.add(n5));
+		assertTrue(arbol.add(n8));
+		assertTrue(arbol.add(n7));
+		Integer n9= 9;
+		Integer n11= 11;
+		Integer n12= 12;
+		Integer n13= 13;
+		assertTrue(arbol.add(n9));
+		assertTrue(arbol.add(n11));
+		assertTrue(arbol.add(n12));
+		assertTrue(arbol.add(n13));
+		
+		arbol.preOrder();
+	}
+	
+	@Test
+	public void testPostOrder()
+	{ //EJERCICIO PÁGINA 28 - APUNTES DE ÁRBOLES (MARTÍN)
+		// Se intenta mostrar el recorrido en postorden de un árbol vacío.
+		arbol.postOrder();
+		
+		assertTrue(arbol.add(n6));
+		assertTrue(arbol.add(n4));
+		assertTrue(arbol.add(n3));
+		assertTrue(arbol.add(n5));
+		Integer n12= 12;
+		assertTrue(arbol.add(n12));
+		Integer n9= 9;
+		assertTrue(arbol.add(n9));
+		Integer n11= 11;
+		assertTrue(arbol.add(n11));
+		Integer n15= 15;
+		assertTrue(arbol.add(n15));
+		assertTrue(arbol.add(n8));
+		
+		System.out.println(arbol.toString());
+		
+		arbol.postOrder();
+	}
+	
+//	@Test
+	public void test2PostOrder(){
+		assertTrue(arbol.add(n8));
+		assertTrue(arbol.add(n6));
+		assertTrue(arbol.add(n4));
+		assertTrue(arbol.add(n0));
+		assertTrue(arbol.add(n5));
+		assertTrue(arbol.add(n2));
+		assertTrue(arbol.add(n1));
+		assertTrue(arbol.add(n3));
+		Integer n11= 11;
+		assertTrue(arbol.add(n11));
+		Integer n10= 10;
+		assertTrue(arbol.add(n10));
+		Integer n9= 9;
+		assertTrue(arbol.add(n9));
+		Integer n12= 12;
+		assertTrue(arbol.add(n12));
+		Integer n14= 14;
+		assertTrue(arbol.add(n14));
+		Integer n13= 13;
+		assertTrue(arbol.add(n13));
+		
+		arbol.postOrder();
+	}
+	
+//	@Test
+	public void test3PostOrder()
+	{
+		Integer n10= 10;
+		assertTrue(arbol.add(n10));
+		assertTrue(arbol.add(n6));
+		assertTrue(arbol.add(n5));
+		assertTrue(arbol.add(n8));
+		assertTrue(arbol.add(n7));
+		Integer n9= 9;
+		Integer n11= 11;
+		Integer n12= 12;
+		Integer n13= 13;
+		assertTrue(arbol.add(n9));
+		assertTrue(arbol.add(n11));
+		assertTrue(arbol.add(n12));
+		assertTrue(arbol.add(n13));
+		
+		arbol.postOrder();
+	}
+	
+	
+//	@Test
+	public void testInOrder()
+	{ //EJERCICIO PÁGINA 28 - APUNTES DE ÁRBOLES (MARTÍN)
+		// Se intenta mostrar el recorrido en preorden de un árbol vacío.
+		arbol.postOrder();
+		assertTrue(arbol.add(n6));
+		assertTrue(arbol.add(n4));
+		assertTrue(arbol.add(n3));
+		assertTrue(arbol.add(n5));
+		Integer n12= 12;
+		assertTrue(arbol.add(n12));
+		Integer n9= 9;
+		assertTrue(arbol.add(n9));
+		Integer n11= 11;
+		assertTrue(arbol.add(n11));
+		Integer n15= 15;
+		assertTrue(arbol.add(n15));
+		assertTrue(arbol.add(n8));
+		
+		System.out.println(arbol.toString());
+		
+		arbol.inOrder();
+	}
+	
+//	@Test
+	public void test2InOrder()
+	{
+		assertTrue(arbol.add(n8));
+		assertTrue(arbol.add(n6));
+		assertTrue(arbol.add(n4));
+		assertTrue(arbol.add(n0));
+		assertTrue(arbol.add(n5));
+		assertTrue(arbol.add(n2));
+		assertTrue(arbol.add(n1));
+		assertTrue(arbol.add(n3));
+		Integer n11= 11;
+		assertTrue(arbol.add(n11));
+		Integer n10= 10;
+		assertTrue(arbol.add(n10));
+		Integer n9= 9;
+		assertTrue(arbol.add(n9));
+		Integer n12= 12;
+		assertTrue(arbol.add(n12));
+		Integer n14= 14;
+		assertTrue(arbol.add(n14));
+		Integer n13= 13;
+		assertTrue(arbol.add(n13));
+		
+		arbol.inOrder();
+	}
+	
+//	@Test
+	public void test3InOrder()
+	{
+		Integer n10= 10;
+		assertTrue(arbol.add(n10));
+		assertTrue(arbol.add(n6));
+		assertTrue(arbol.add(n5));
+		assertTrue(arbol.add(n8));
+		assertTrue(arbol.add(n7));
+		Integer n9= 9;
+		Integer n11= 11;
+		Integer n12= 12;
+		Integer n13= 13;
+		assertTrue(arbol.add(n9));
+		assertTrue(arbol.add(n11));
+		assertTrue(arbol.add(n12));
+		assertTrue(arbol.add(n13));
+		
+		arbol.inOrder();
+		System.out.println(arbol.toString());
+	}
+	
+}

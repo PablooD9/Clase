@@ -1,0 +1,394 @@
+package arbolesUO251017;
+
+/**
+ * @author Néstor
+ * @version 2016-17
+*/
+public class BSTree <T extends Comparable<T>>{
+
+
+	private BSTNode<T> raiz;
+	private String cadenaRecorridos= "";
+
+	/**
+	 * @param x
+	 *            El objeto comparable que tiene que insertar
+	 * 
+	 * @return verdadero cuando lo inserta o modifica (si existe sustituye la información)
+ *  	      falso cuando no lo hace
+	 */
+	public boolean add(T x)
+	{
+		if (x == null)
+		{
+			return false;
+		}
+		
+		else
+		{
+			raiz= addRecursivo(raiz, x);
+			return true;
+		}
+	}
+	
+	/** Método recursivo usado para añadir nodos.
+	 * @param root
+	 * @param x
+	 * @return
+	 */
+	private BSTNode<T> addRecursivo(BSTNode<T> root, T x)
+	{
+		if (root == null)
+		{
+			return new BSTNode<T>(x);
+		}
+		else
+		{
+			if (root.getInfo().compareTo(x) == 0)
+			{
+				root.setInfo(x);
+			}
+			else if (root.getInfo().compareTo(x) > 0)
+			{
+				root.setLeft(addRecursivo(root.getLeft(), x));
+			}
+			else if (root.getInfo().compareTo(x) < 0)
+			{
+				root.setRight(addRecursivo(root.getRight(), x));
+			}
+			return root;
+		}
+	}
+
+
+	/**
+	 * @param x
+	 *            El objeto comparable que se busca
+	 * @return El objeto que se busca (completo) si lo encuentra. (null) si no
+	 *         lo encuentra
+	 */
+	public T search(T x) 
+	{
+		if (x == null || raiz == null)
+		{
+			return null;
+		}
+		else
+		{
+			BSTNode<T> nodoBuscado= searchRecursivo(raiz, x);
+			if (nodoBuscado == null)
+			{
+				return null;
+			}
+			else 
+			{
+				return nodoBuscado.getInfo();
+			}
+		}
+	}
+	
+	public BSTNode<T> searchRecursivo(BSTNode<T> root, T x)
+	{
+		if (root == null)
+		{
+			return null;
+		}
+		
+		else
+		{
+			if (root.getInfo().compareTo(x) == 0)
+			{
+				return root;
+			}
+			
+			else if (root.getInfo().compareTo(x) > 0)
+			{
+				return searchRecursivo(root.getLeft(), x);
+			}
+			
+			else if (root.getInfo().compareTo(x) < 0)
+			{
+				return searchRecursivo(root.getRight(), x);
+			}
+			
+			return null;
+		}
+	}
+	
+	private void vaciarCadena()
+	{
+		cadenaRecorridos= "";
+	}
+
+	/**
+	 * Muestra por pantalla el recorrido en pre-orden (izquierda-derecha) y lo devuelve en un String (separados por tabuladores)
+	 */
+	public String preOrder() 
+	{
+		if (raiz== null)
+		{
+			return "";
+		}
+		else
+		{
+			String cadena= raiz.toString() + "\t";
+			preOrderRecursivo(raiz);
+			cadena += cadenaRecorridos;
+			System.out.println(cadena);
+			vaciarCadena();  //Vacía cadenaRecorridos para un nuevo uso.
+			return cadena;
+		}
+	}
+	
+	private void preOrderRecursivo(BSTNode<T> root)
+	{	
+		if (root.getLeft() != null)
+		{
+			cadenaRecorridos += root.getLeft().toString() + "\t";
+			preOrderRecursivo(root.getLeft());
+		}
+		if (root.getRight() != null)
+		{
+			cadenaRecorridos += root.getRight().toString() + "\t";
+			preOrderRecursivo(root.getRight());
+		}
+	}
+
+
+	/**
+	 * Muestra por pantalla el recorrido en post-orden (izquierda-derecha) y lo devuelve en un String (separados por tabuladores)
+	 */
+	public String postOrder() 
+	{
+		if (raiz == null)
+		{
+			return "";
+		}
+		else
+		{
+			String cadena= "";
+			postOrderRecursivo(raiz);
+			cadena += cadenaRecorridos;
+			cadena += raiz.toString();
+//			cadena += "\t";
+			System.out.println(cadena);
+			vaciarCadena();
+			return cadena;
+		}
+	}
+	
+	private void postOrderRecursivo(BSTNode<T> root)
+	{
+		if (root.getLeft() != null)
+		{
+			postOrderRecursivo(root.getLeft());
+			
+			if (root.getRight() != null)
+			{
+				postOrderRecursivo(root.getRight());
+				if (root != raiz)
+				{
+					cadenaRecorridos += root.toString() + "\t";
+				}
+			}
+			else
+			{
+				cadenaRecorridos += root.toString() + "\t";
+			}
+		}
+		
+		else if (root.getLeft() == null)
+		{
+			if (root.getRight() != null)
+			{
+				postOrderRecursivo(root.getRight());
+			}
+			
+			cadenaRecorridos += root.toString() + "\t";
+		}
+	}
+
+	/**
+	 * Muestra por pantalla el recorrido en in-orden (izquierda-derecha) y lo devuelve en un String (separados por tabuladores)
+	 */
+	public String inOrder() 
+	{
+		if (raiz == null)
+		{
+			return "";
+		}
+		else
+		{
+			String cadena= "";
+			inOrdenRecursivo(raiz);
+			cadena= cadenaRecorridos;
+			System.out.println(cadena);
+			vaciarCadena();
+			return cadena;
+		}
+	}
+	
+	private void inOrdenRecursivo(BSTNode<T> root)
+	{
+		if (root.getLeft() != null)
+		{
+			inOrdenRecursivo(root.getLeft());
+		}
+		if (root.getLeft() == null)
+		{
+			cadenaRecorridos += root.toString() + "\t";
+		}
+		if (root.getRight() != null)
+		{
+			if (root.getLeft() != null)
+			{
+				cadenaRecorridos += root.toString() + "\t";
+			}
+			inOrdenRecursivo(root.getRight());
+		}
+		if (root.getRight() == null && root.getLeft() != null)
+		{
+			cadenaRecorridos += root.toString() + "\t";
+		}
+	}
+
+
+	/**
+	 * @param x El objeto que se quiere borrar
+	 * @return true si lo ha borrado, false en caso contrario (no existía)
+	 */
+	public boolean remove (T x)
+	{
+		if (raiz == null || x == null)
+		{
+			return false;
+		}
+		
+		else
+		{
+			try
+			{
+				raiz= removeRecursivo(raiz, x);
+			} catch (RuntimeException rE)
+			{
+				return false;
+			}
+			
+			return true;
+		}
+	}
+	
+	private BSTNode<T> removeRecursivo(BSTNode <T> root, T x)
+	{
+		if (root == null)
+		{
+			throw new RuntimeException();
+		}
+		
+		else
+		{
+			if (root.getInfo().compareTo(x) < 0)
+			{
+				root.setRight(removeRecursivo(root.getRight(), x));
+			}
+			
+			else if (root.getInfo().compareTo(x) > 0)
+			{
+				root.setLeft(removeRecursivo(root.getLeft(), x));
+			}
+			
+			else if (root.getInfo().compareTo(x) == 0)
+			{
+				if (root.getLeft() == null && root.getRight() == null)
+				{
+					return null;
+				}
+				
+				else if (root.getLeft() != null && root.getRight() == null)
+				{
+					return root.getLeft();
+				}
+				
+				else if (root.getLeft() == null && root.getRight() != null)
+				{
+					return root.getRight();
+				}
+				
+				else if (root.getLeft() != null && root.getRight() != null)
+				{
+					T maxNodo= getMaximo(root.getLeft());
+					root.setInfo(maxNodo);
+					root.setLeft(removeRecursivo(root.getLeft(), root.getInfo()));
+				}
+			}
+			return root;
+		}
+		
+	}
+	
+	protected T getMaximo(BSTNode<T> root)
+	{
+		if (root == null)
+		{
+			return null;
+		}
+			
+		else
+		{
+			if (root.getRight() == null)
+			{
+				return root.getInfo();
+			}
+			
+			else
+			{
+				return getMaximo(root.getRight());
+			}
+		}
+	}
+
+
+	/**
+	 * Genera un String con el árbol "tumbado" (la raíz a la izquierda y las ramas hacia la derecha)
+	 * Es un recorrido InOrden-derecha-izquierda, tabulando para mostrar los distintos niveles
+	 * Utiliza el toString de la información almacenada
+	 *  
+	 * @param p	La raíz del árbol a mostrar tumbado
+	 * @param esp	El espaciado en número de tabulaciones para indicar la profundidad
+	 * @return	El String generado
+	 */
+	protected String tumbarArbol(BSTNode<T> p, int esp) 
+	{
+		StringBuilder cadena = new StringBuilder();
+
+
+		if (p != null)
+		{
+			cadena.append(tumbarArbol(p.getRight(), esp + 1));
+			for (int i = 0; i < esp; i++)
+				cadena.append("\t");
+			cadena.append(p + "\n");
+			cadena.append(tumbarArbol(p.getLeft(), esp + 1));
+		}
+		return cadena.toString();
+	}
+	
+
+
+	public String toString() 
+	{
+		return tumbarArbol(raiz, 0);
+	}
+	
+	protected BSTNode<T> getRaiz()
+	{
+		return raiz;
+	}
+	
+	protected void setRaiz(BSTNode<T> newRaiz)
+	{
+		raiz= newRaiz;
+	}
+}
+
+

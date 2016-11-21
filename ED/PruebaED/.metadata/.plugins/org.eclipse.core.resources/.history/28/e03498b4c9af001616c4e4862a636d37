@@ -1,0 +1,68 @@
+package arbolesUO251017;
+
+import static org.junit.Assert.*;
+
+import org.junit.Before;
+import org.junit.Test;
+
+public class BinaryHeapTest {
+	
+	private int n0, n1, n2, n3, n4, n5, n6, n7, n8;
+	
+	private EDBinaryHeap<Integer> bH;
+	
+	@Before
+	public void setUp()
+	{
+		bH= new EDBinaryHeap<Integer>(10);
+		
+		n0= 0;
+		n1= 1;
+		n2= 2;
+		n3= 3;
+		n4= 4;
+		n5= 5;
+		n6= 6;
+		n7= 7;
+		n8= 8;
+	}
+
+	@Test
+	public void testAdd() {
+		//Ejemplo transparencias Martín página 103
+		assertTrue(bH.add(13));
+		assertTrue(bH.add(21));
+		assertTrue(bH.add(16));
+		assertTrue(bH.add(24));
+		assertTrue(bH.add(31));
+		assertTrue(bH.add(25));
+		assertTrue(bH.add(50));
+		assertTrue(bH.add(65));
+		assertTrue(bH.add(18));
+		assertTrue(bH.add(13));
+		assertTrue(bH.add(-1));
+		
+		System.out.println(bH.toString());
+	}
+	
+//	@Test
+	public void testPoll()
+	{	//Ejemplo transparencias Martín página 103
+		assertTrue(bH.add(13));
+		assertTrue(bH.add(21));
+		assertTrue(bH.add(16));
+		assertTrue(bH.add(24));
+		assertTrue(bH.add(31));
+		assertTrue(bH.add(25));
+		assertTrue(bH.add(50));
+		assertTrue(bH.add(65));
+		assertTrue(bH.add(18));
+		
+		System.out.println(bH.toString());
+		
+		assertEquals((Integer) 13, bH.poll());
+		
+		System.out.println(bH.toString());
+	}
+
+}

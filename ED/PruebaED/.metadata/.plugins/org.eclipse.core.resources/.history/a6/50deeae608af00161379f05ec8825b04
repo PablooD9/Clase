@@ -1,0 +1,41 @@
+package arbolesUO251017;
+
+import static org.junit.Assert.*;
+
+import org.junit.Before;
+import org.junit.Test;
+
+public class BinaryHeapTest {
+	
+	private int n0, n1, n2, n3, n4, n5, n6, n7, n8;
+	
+	private EDBinaryHeap<Integer> bH;
+	
+	@Before
+	public void setUp()
+	{
+		bH= new EDBinaryHeap<Integer>(5);
+		
+		n0= 0;
+		n1= 1;
+		n2= 2;
+		n3= 3;
+		n4= 4;
+		n5= 5;
+		n6= 6;
+		n7= 7;
+		n8= 8;
+	}
+
+	@Test
+	public void testAdd() {
+		assertTrue(bH.add(12));
+		
+		System.out.println(bH.toString());
+		
+		assertTrue(bH.add(6));
+		
+		System.out.println(bH.toString());
+	}
+
+}

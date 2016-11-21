@@ -1,0 +1,341 @@
+package arbolesUO251017;
+
+import static org.junit.Assert.*;
+
+import org.junit.Before;
+import org.junit.Test;
+
+public class testAVLTree {
+	
+	private AVLTree<Integer> arbolAVL;
+	private Integer n0, n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, n17, n18, n19, n20, n21, n22, n23, n24, n25, n26,
+																													n27, n28, n29, n30;
+
+	@Before
+	public void setUp()
+	{
+		arbolAVL= new AVLTree<Integer>();
+		
+		n0= 0;
+		n1= 1;
+		n2= 2;
+		n3= 3;
+		n4= 4;
+		n5= 5;
+		n6= 6;
+		n7= 7;
+		n8= 8;
+		
+		n30= 30;
+		n29= 29;
+		n28= 28;
+		n27= 27;
+		n26= 26;
+		n25= 25;
+		n24= 24;
+		n23= 23;
+		n22= 22;
+		n21= 21;
+		n20= 20;
+		n19= 19;
+		n18= 18;
+		n17= 17;
+		n16= 16;
+		n15= 15;
+		n14= 14;
+		n13= 13;
+		n12= 12;
+		n11= 11;
+		n10= 10;
+		n9= 9;
+	}
+	
+//	@Test
+	public void testAdd() {
+		
+		
+		//Se añaden muchos nodos (SE PROBARÁ LA ROTACIÓN SIMPLE DERECHA)
+		assertTrue(arbolAVL.add(n3));
+		assertTrue(arbolAVL.add(n4));
+		assertTrue(arbolAVL.add(n2));
+		assertTrue(arbolAVL.add(n5));
+		assertTrue(arbolAVL.add(n6));
+		
+		System.out.println(arbolAVL.toString()); //Comprobamos por pantalla que sale bien.
+		
+		//Se crea un nuevo árbol para probar la ROTACIÓN SIMPLE IZQUIERDA
+		AVLTree<Integer> arbolAVL2= new AVLTree<Integer>();
+		
+		assertTrue(arbolAVL2.add(n3));
+		assertTrue(arbolAVL2.add(n2));
+		assertTrue(arbolAVL2.add(n5));
+		assertTrue(arbolAVL2.add(n1));
+		assertTrue(arbolAVL2.add(n0));
+		
+		System.out.println(arbolAVL2.toString()); //Comprobamos por pantalla que sale bien.
+		
+		//Se crea otro nuevo árbol para probar la ROTACIÓN DOBLE DERECHA
+		AVLTree<Integer> arbolAVL3= new AVLTree<Integer>();
+		
+		assertTrue(arbolAVL3.add(n8));
+		assertTrue(arbolAVL3.add(n2));
+		assertTrue(arbolAVL3.add(n9));
+		assertTrue(arbolAVL3.add(n1));
+		assertTrue(arbolAVL3.add(n5));
+		assertTrue(arbolAVL3.add(n10));
+		assertTrue(arbolAVL3.add(n4));
+		assertTrue(arbolAVL3.add(n6));
+		assertTrue(arbolAVL3.add(n3));
+//		assertTrue(arbolAVL3.add(n6));
+		
+		System.out.println(arbolAVL3.toString()); //Comprobamos por pantalla que sale bien.
+		
+		//Se crea otro nuevo árbol para probar la ROTACIÓN DOBLE IZQUIERDA
+		AVLTree<Integer> arbolAVL4= new AVLTree<Integer>();
+		
+		assertTrue(arbolAVL4.add(n3));
+		assertTrue(arbolAVL4.add(n2));
+		assertTrue(arbolAVL4.add(n8));
+		assertTrue(arbolAVL4.add(n1));
+		assertTrue(arbolAVL4.add(n6));
+		assertTrue(arbolAVL4.add(n9));
+		assertTrue(arbolAVL4.add(n4));
+		assertTrue(arbolAVL4.add(n7));
+		assertTrue(arbolAVL4.add(n5));
+//		assertTrue(arbolAVL4.add(n6));
+		
+		System.out.println(arbolAVL4.toString()); //Comprobamos por pantalla que sale bien.
+	}
+	
+//	@Test
+	public void testRemove()
+	{
+		//Se añaden muchos nodos (SE PROBARÁ LA ROTACIÓN SIMPLE DERECHA)
+		assertTrue(arbolAVL.add(n3));
+		assertTrue(arbolAVL.add(n4));
+		assertTrue(arbolAVL.add(n2));
+		assertTrue(arbolAVL.add(n5));
+		assertTrue(arbolAVL.add(n6));
+		
+		System.out.println(arbolAVL.toString());
+		
+		assertTrue(arbolAVL.remove(n6));
+		
+		System.out.println(arbolAVL.toString());
+		
+		assertTrue(arbolAVL.remove(n4));
+		
+		System.out.println(arbolAVL.toString());
+	}
+
+//	@Test
+	public void test_10_RotacionesSimplesIzquierdaAdd () 
+	{		
+		assertTrue(arbolAVL.add(n20));
+		assertTrue(arbolAVL.add(n19));
+		assertTrue(arbolAVL.add(n18)); //Primera rotación
+		assertTrue(arbolAVL.add(n17));
+		assertTrue(arbolAVL.add(n16)); //Segunda
+		assertTrue(arbolAVL.add(n15)); //Tercera
+		assertTrue(arbolAVL.add(n14)); //Cuarta
+		assertTrue(arbolAVL.add(n13));
+		assertTrue(arbolAVL.add(n12)); //Quinta
+		assertTrue(arbolAVL.add(n11)); //Sexta
+		assertTrue(arbolAVL.add(n10)); //Séptima
+		assertTrue(arbolAVL.add(n9)); //Octava
+		assertTrue(arbolAVL.add(n8)); //Novena
+		assertTrue(arbolAVL.add(n7)); //Décima
+		
+		System.out.println(arbolAVL.toString());
+	}
+
+
+//	@Test
+	public void test_10_RotacionesSimplesDerechaAdd()
+	{	
+		assertTrue(arbolAVL.add(n7));
+		assertTrue(arbolAVL.add(n8));
+		assertTrue(arbolAVL.add(n9)); //Primera rotación
+		assertTrue(arbolAVL.add(n10));
+		assertTrue(arbolAVL.add(n11)); //Segunda
+		assertTrue(arbolAVL.add(n12)); //Tercera
+		assertTrue(arbolAVL.add(n13)); //Cuarta
+		assertTrue(arbolAVL.add(n14));
+		assertTrue(arbolAVL.add(n15)); //Quinta
+		assertTrue(arbolAVL.add(n16)); //Sexta
+		assertTrue(arbolAVL.add(n17)); //Séptima
+		assertTrue(arbolAVL.add(n18)); //Octava
+		assertTrue(arbolAVL.add(n19)); //Novena
+		assertTrue(arbolAVL.add(n20)); //Décima
+		
+		System.out.println(arbolAVL.toString());
+	}
+
+
+//	@Test
+	public void test_10_RotacionesDoblesIzquierdaAdd() 
+	{	
+		assertTrue(arbolAVL.add(n30));
+		assertTrue(arbolAVL.add(n28));
+		assertTrue(arbolAVL.add(n29)); //Primera rotación
+		assertTrue(arbolAVL.add(n26));
+		assertTrue(arbolAVL.add(n27)); //Segunda rotación
+		assertTrue(arbolAVL.add(n24)); //Rotación simple izquierda (no cuenta)
+		assertTrue(arbolAVL.add(n25)); //Tercera rotación
+		assertTrue(arbolAVL.add(n22));
+		assertTrue(arbolAVL.add(n23)); //Cuarta rotación
+		assertTrue(arbolAVL.add(n21)); //Rotación simple izquierda (no cuenta)
+		assertTrue(arbolAVL.add(n20)); //Rotación simple izquierda (no cuenta)
+		assertTrue(arbolAVL.add(n18)); //Rotación simple izquierda (no cuenta)
+		assertTrue(arbolAVL.add(n19)); //Quinta rotación
+		assertTrue(arbolAVL.add(n15)); //Rotación simple izquierda (no cuenta)
+		assertTrue(arbolAVL.add(n17)); //Sexta rotación 
+		assertTrue(arbolAVL.add(n12)); 
+		assertTrue(arbolAVL.add(n14)); //Séptima rotación
+		assertTrue(arbolAVL.add(n16)); //Octava
+		assertTrue(arbolAVL.add(n13)); //Novena 
+		assertTrue(arbolAVL.add(n11)); //Rotación simple izquierda (no cuenta)
+		assertTrue(arbolAVL.add(n10)); //Rotación simple izquierda (no cuenta)
+		assertTrue(arbolAVL.add(n9));  //Rotación simple izquierda (no cuenta)
+		assertTrue(arbolAVL.add(n8)); //Rotación simple izquierda (no cuenta)
+		assertTrue(arbolAVL.add(n6)); //Rotación simple izquierda (no cuenta)
+		assertTrue(arbolAVL.add(n7)); //Décima rotación
+		
+		System.out.println(arbolAVL.toString());
+	}
+
+
+//	@Test
+	public void test_10_RotacionesDoblesDerechaAdd() 
+	{	
+		assertTrue(arbolAVL.add(n6));
+		assertTrue(arbolAVL.add(n9));
+		assertTrue(arbolAVL.add(n7)); //Primera rotación doble derecha
+		assertTrue(arbolAVL.add(n11));
+		assertTrue(arbolAVL.add(n10)); //Segunda rotación
+		assertTrue(arbolAVL.add(n8)); //Tercera rotación
+		assertTrue(arbolAVL.add(n15)); //Rotación simple derecha (no cuenta)
+		assertTrue(arbolAVL.add(n18));
+		assertTrue(arbolAVL.add(n16)); //Cuarta rotación
+		assertTrue(arbolAVL.add(n14)); //Quinta rotación doble derecha
+		assertTrue(arbolAVL.add(n17)); //Sexta rotación
+		assertTrue(arbolAVL.add(n13)); //Octava rotación
+		assertTrue(arbolAVL.add(n12)); //Rotación simple izquierda (no cuenta)
+		assertTrue(arbolAVL.add(n2)); //Rotación simple izquierda (no cuenta)
+		assertTrue(arbolAVL.add(n22));
+		assertTrue(arbolAVL.add(n19)); //Novena rotación
+		assertTrue(arbolAVL.add(n20)); //Rotación simple derecha (no cuenta)
+		assertTrue(arbolAVL.add(n21)); //Rotación doble izquierda (no cuenta)
+		assertTrue(arbolAVL.add(n25)); //Rotación simple derecha (no cuenta)
+		assertTrue(arbolAVL.add(n24)); //Décima rotación
+		
+		System.out.println(arbolAVL.toString());
+	}
+
+
+//	@Test
+	public void test_3_RotacionesSimplesIzquierdaRemoveHijoDesequilibrado () 
+	{
+		//Añadimos nodos al árbol AVL, de tal forma que la raíz (5) tenga dos hijos y, a su vez, su
+		//hijo izquierdo tengo otro hijo a su izquierda. Es decir, que el nodo 5 tiene un BF = -1.
+		assertTrue(arbolAVL.add(n5));
+		assertTrue(arbolAVL.add(n3));
+		assertTrue(arbolAVL.add(n6));
+		assertTrue(arbolAVL.add(n2));
+		System.out.println(arbolAVL.toString());
+		
+		//Si se borra el nodo n5, el nodo n4 tendrá un BF de -2, por lo tanto debería hacer una rotación
+		//simple izquierda.
+		assertTrue(arbolAVL.remove(n6));
+		System.out.println(arbolAVL.toString());
+		
+		//Se añade otro nodo como hijo izquierdo de n2, y se borra el nodo izquierdo de
+		//la raíz (n5)
+		assertTrue(arbolAVL.add(n1));
+		assertTrue(arbolAVL.remove(n5));
+		System.out.println(arbolAVL.toString());
+		
+		//Añadimos, finalmente, otro nodo como hijo izquierdo de n1 (el n0), y borramos
+		//el nodo izquierdo de la raíz (n3)
+		assertTrue(arbolAVL.add(n0));
+		assertTrue(arbolAVL.remove(n3));
+		System.out.println(arbolAVL.toString());
+	}
+
+
+	@Test
+	public void test_3_RotacionesSimplesDerechaRemoveHijoDesequilibrado () 
+	{
+		
+	}
+
+
+	@Test
+	public void test_3_RotacionesDoblesIzquierdaRemove () 
+	{
+		
+	}
+
+
+	@Test
+	public void test_3_RotacionesDoblesDerechaRemove () 
+	{
+		//Añadimos nodos al árbol AVL, de tal forma que la raíz (4) tenga dos hijos y, a su vez, su
+		//hijo derecho tiene otro hijo a su izquierda. Es decir, que el nodo 4 tiene un BF = 1.
+		assertTrue(arbolAVL.add(n4));
+		assertTrue(arbolAVL.add(n3));
+		assertTrue(arbolAVL.add(n10));
+		assertTrue(arbolAVL.add(n5));
+		
+		System.out.println(arbolAVL.toString());
+		
+		//Si borramos el nodo n3, el árbol quedaría desequilibrado. Se necesitaría hacer una rotación doble DERECHA.
+		assertTrue(arbolAVL.remove(n3));
+		
+		System.out.println(arbolAVL.toString());
+		
+		//Añadimos nodo a la izquierda de n10, y borramos el n4 (rotación doble derecha tras borrado)
+		assertTrue(arbolAVL.add(n6));
+		assertTrue(arbolAVL.remove(n4));
+		
+		System.out.println(arbolAVL.toString());
+		
+		//Añadimos nodo a la izquierda de n5, a la izquierda de n10, y borramos el subarbol
+		//izquierdo de n6 (rotación doble derecha tras borrado).
+		assertTrue(arbolAVL.add(n4));
+		assertTrue(arbolAVL.add(n9));
+		
+		System.out.println(arbolAVL.toString());
+		
+		assertTrue(arbolAVL.remove(n4));
+		assertTrue(arbolAVL.remove(n5));
+		
+		System.out.println(arbolAVL.toString());
+	}
+
+
+	@Test
+	public void test_3_RotacionesSimplesIzquierdaHijoEquilibrado () 
+	{
+		
+	}
+
+
+	@Test
+	public void test_3_RotacionesSimplesDerechaHijoEquilibrado () 
+	{
+		//Añadimos nodos al árbol AVL, de tal forma que la raíz (4) tenga dos hijos y, a su vez, su
+		//hijo derecho tiene dos hijos (hijo equilibrado). Es decir, que el nodo 4 tiene un BF = 1.
+		assertTrue(arbolAVL.add(n4));
+		assertTrue(arbolAVL.add(n3));
+		assertTrue(arbolAVL.add(n10));
+		assertTrue(arbolAVL.add(n5));
+		assertTrue(arbolAVL.add(n11));
+		
+		//Borramos el n3. En este punto, según la teoría, se opta por una rotación simple (en este caso
+		//, derecha)
+		assertTrue(arbolAVL.remove(n3));
+		System.out.println(arbolAVL.toString());
+	}
+
+}

@@ -1,0 +1,154 @@
+package arbolesUO251017;
+
+/**
+ * @author Néstor
+ * @version 2016-17
+ * 
+ */
+public class EDBinaryHeap<T extends Comparable<T>> implements EDPriorityQueue<T>{
+	protected T [] elementos;
+	protected int numElementos;
+
+	@SuppressWarnings("unchecked")
+	public EDBinaryHeap(int numMaxElementos) 
+	{
+		elementos= (T[]) new Comparable[numMaxElementos];
+		numElementos= 0;
+	}
+
+	public boolean add(T info) 
+	{
+		if (info == null || numElementos == elementos.length)
+		{
+			return false;
+		}
+
+		elementos[numElementos]= info;
+		numElementos++;
+		cribaAscendente(numElementos - 1);
+			
+		return true;
+	}
+	
+	private void cribaAscendente(int x)
+	{
+		T nodo= elementos[x];
+		
+		if (numElementos > 1)
+		{
+			int posPadre= ((x - 1) / 2);
+			
+			if (posPadre >= 0)
+			{
+				T padre= elementos[posPadre];
+				
+				if (padre.compareTo(nodo) > 0)
+				{
+					elementos[posPadre]= nodo;
+					elementos[x]= padre;
+					cribaAscendente(posPadre);
+				}
+			}
+		}
+		
+	}
+
+
+	public T poll() 
+	{
+		if (elementos.length == 0)
+		{
+			return null;
+		}
+		
+		T raiz= elementos[0];
+		
+		cribaDescendente(numElementos - 1);
+		
+		return raiz;
+	}
+	
+	private void cribaDescendente(int x)
+	{
+		T nodoRaiz= elementos[0];
+		T nodo= elementos[x];
+		T nodo1= elementos[1];
+		T nodo2= elementos[2];
+		
+		if (nodo1.compareTo(nodo) > 0)
+		{
+			nodo1= nodo;
+		}
+		
+		else if (nodo2.compareTo(nodo) > 0)
+		{
+			nodo2= nodo;
+		}
+		
+		else
+		{
+			T maxNodoFila1= getMaxFila1();
+			nodoRaiz= maxNodoFila1;
+		}
+	}
+	
+	private T getMaxFila1()
+	{
+		if (elementos[1].compareTo(elementos[2]) > 0)
+		{
+			return elementos[2];
+		}
+		
+		return elementos[1];
+	}
+
+
+	public boolean remove(T info) 
+	{
+		return false;
+		
+	}
+
+
+	public boolean isEmpty() 
+	{
+		return false;
+		
+	}
+
+
+	public void clear() 
+	{
+		
+	}
+
+
+	/**
+	 * Devuelve una cadena con la información de los elementos que contiene el
+	 * montículo en forma visible (recomendado inorden-derecha-izquierda tabulado)
+	 */
+
+	public String toString() {
+		// Por ejemplo el árbol tumbado...
+			StringBuilder cadena = new StringBuilder();
+			cadena.append(inOrdenDerechaTabulado(0,0));
+			return cadena.toString();
+		}
+
+
+	// el árbol tumbado...
+	private String inOrdenDerechaTabulado(int p,int esp) {
+		String cadena="";
+		if (p<numElementos) {
+			int izq = Math.abs(2*p+1);
+			int der = Math.abs(2*p+2);
+			cadena+=inOrdenDerechaTabulado(der,esp+1);
+			for(int i = 0;i<esp;i++)
+				cadena+="\t";
+			cadena += elementos[p]+"\n";
+			cadena+=inOrdenDerechaTabulado(izq,esp+1);
+		}
+		return cadena;	
+	}
+
+}

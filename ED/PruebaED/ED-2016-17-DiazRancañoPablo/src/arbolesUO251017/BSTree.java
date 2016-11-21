@@ -10,7 +10,6 @@ public class BSTree <T extends Comparable<T>>{
 	private BSTNode<T> raiz;
 	private String cadenaRecorridos= "";
 
-
 	/**
 	 * @param x
 	 *            El objeto comparable que tiene que insertar
@@ -132,7 +131,7 @@ public class BSTree <T extends Comparable<T>>{
 		}
 		else
 		{
-			String cadena= raiz.getInfo() + "\t";
+			String cadena= raiz.toString() + "\t";
 			preOrderRecursivo(raiz);
 			cadena += cadenaRecorridos;
 			System.out.println(cadena);
@@ -145,12 +144,12 @@ public class BSTree <T extends Comparable<T>>{
 	{	
 		if (root.getLeft() != null)
 		{
-			cadenaRecorridos += root.getLeft().getInfo() + "\t";
+			cadenaRecorridos += root.getLeft().toString() + "\t";
 			preOrderRecursivo(root.getLeft());
 		}
 		if (root.getRight() != null)
 		{
-			cadenaRecorridos += root.getRight().getInfo() + "\t";
+			cadenaRecorridos += root.getRight().toString() + "\t";
 			preOrderRecursivo(root.getRight());
 		}
 	}
@@ -170,7 +169,7 @@ public class BSTree <T extends Comparable<T>>{
 			String cadena= "";
 			postOrderRecursivo(raiz);
 			cadena += cadenaRecorridos;
-			cadena += raiz.getInfo();
+			
 			System.out.println(cadena);
 			vaciarCadena();
 			return cadena;
@@ -186,14 +185,15 @@ public class BSTree <T extends Comparable<T>>{
 			if (root.getRight() != null)
 			{
 				postOrderRecursivo(root.getRight());
-				if (root != raiz)
-				{
-					cadenaRecorridos += root.getInfo() + "\t";
-				}
+//				if (raiz != root)
+//				{
+//					cadenaRecorridos += root.toString() + "\t";
+//				}
+				cadenaRecorridos += root.toString() + "\t";
 			}
 			else
 			{
-				cadenaRecorridos += root.getInfo() + "\t";
+				cadenaRecorridos += root.toString() + "\t";
 			}
 		}
 		
@@ -204,8 +204,9 @@ public class BSTree <T extends Comparable<T>>{
 				postOrderRecursivo(root.getRight());
 			}
 			
-			cadenaRecorridos += root.getInfo() + "\t";
+			cadenaRecorridos += root.toString() + "\t";
 		}
+		
 	}
 
 	/**
@@ -236,19 +237,19 @@ public class BSTree <T extends Comparable<T>>{
 		}
 		if (root.getLeft() == null)
 		{
-			cadenaRecorridos += root.getInfo() + "\t";
+			cadenaRecorridos += root.toString() + "\t";
 		}
 		if (root.getRight() != null)
 		{
 			if (root.getLeft() != null)
 			{
-				cadenaRecorridos += root.getInfo() + "\t";
+				cadenaRecorridos += root.toString() + "\t";
 			}
 			inOrdenRecursivo(root.getRight());
 		}
 		if (root.getRight() == null && root.getLeft() != null)
 		{
-			cadenaRecorridos += root.getInfo() + "\t";
+			cadenaRecorridos += root.toString() + "\t";
 		}
 	}
 
@@ -259,14 +260,21 @@ public class BSTree <T extends Comparable<T>>{
 	 */
 	public boolean remove (T x)
 	{
-		if (raiz == null || x == null || search(x) == null)
+		if (raiz == null || x == null)
 		{
 			return false;
 		}
 		
 		else
 		{
-			raiz= removeRecursivo(raiz, x);
+			try
+			{
+				raiz= removeRecursivo(raiz, x);
+			} catch (RuntimeException rE)
+			{
+				return false;
+			}
+			
 			return true;
 		}
 	}
@@ -275,7 +283,7 @@ public class BSTree <T extends Comparable<T>>{
 	{
 		if (root == null)
 		{
-			return null;
+			throw new RuntimeException();
 		}
 		
 		else

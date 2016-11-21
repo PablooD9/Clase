@@ -1,0 +1,5 @@
+package arbolesUO251017;
+
+public interface EDPriorityQueue {
+
+}

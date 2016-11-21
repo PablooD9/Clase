@@ -1,0 +1,395 @@
+package arbolesUO251017;
+
+/**
+ * Clase derivada de BSTree añadiendo funcionalidad de AVL
+ * @author Néstor
+ * @version 2016-17
+ */
+/**
+ * @author PabloD
+ *
+ * @param <T>
+ */
+public class AVLTree <T extends Comparable<T> >extends BSTree <T>{
+	
+	/**
+	 * Constructor 
+	 */
+	public AVLTree() 
+	{
+		super();
+	}
+
+
+	/* (non-Javadoc)
+	 * @see BSTree#add(java.lang.Comparable)
+	 * Redefine inserción para funcionalidad AVL
+	 */
+	public boolean add (T info)
+	{
+		if (info == null)
+		{
+			return false;
+		}
+		
+		else
+		{
+			if (getRaiz() == null)
+			{
+				setRaiz(new AVLNode<T>(info));
+				return true;
+			}
+			
+			AVLNode<T> raiz= (AVLNode<T>) getRaiz();
+			setRaiz(addRecursive(raiz, info));
+			return true;
+		}
+	}
+	
+	private AVLNode<T> addRecursive(AVLNode<T> avl, T x)
+	{
+		if (avl == null)
+		{
+			return new AVLNode<T>(x);
+		}
+		
+		else
+		{
+			if (x.compareTo(avl.getInfo()) == 0)
+			{
+				avl.setInfo(x);
+			}
+			
+			else if (x.compareTo(avl.getInfo()) > 0)
+			{
+				avl.setRight(addRecursive(avl.getRight(), x));
+			}
+			
+			else
+			{
+				avl.setLeft(addRecursive(avl.getLeft(), x));
+			}
+			
+			return updateAndBalanceIfNecesary(avl);  //¿Se debe reequilibrar el árbol tras añadir el nuevo nodo?
+		}
+	}
+	
+	/**
+	 * @param nodo el árbol que se quiere actualizar Height, BF y balancear si fuese necesario
+	 * @return la raíz del árbol por si ha cambiado
+	 */
+	private AVLNode<T> updateAndBalanceIfNecesary (AVLNode<T> theRoot)
+	{
+		theRoot.updateHeight(); //Para actualizar el BF antes de comprobar si necesita reequilibrarse.
+		
+		if (theRoot.getBF() == -2)
+		{
+			if (theRoot.getLeft() != null)
+			{
+				if (theRoot.getLeft().getBF() == -1)
+				{
+					theRoot= singleLeftRotation(theRoot);
+				}
+				
+				else if(theRoot.getLeft().getBF() == 1)
+				{
+					theRoot= doubleLeftRotation(theRoot);
+				}
+				
+//				else if (theRoot.getLeft().getBF() == -2)
+//				{
+//					theRoot= doubleLeftRotation(theRoot);
+//				}	
+				
+				else
+				{
+					theRoot= singleLeftRotation(theRoot);
+				}
+			}
+		}
+		
+		else if (theRoot.getBF() == 2)
+		{
+			if (theRoot.getRight() != null)
+			{
+				if (theRoot.getRight().getBF() == 1)
+				{
+					theRoot= singleRightRotation(theRoot);
+				}
+				
+				else if(theRoot.getRight().getBF() == -1)
+				{
+					theRoot= doubleRightRotation(theRoot);
+				}
+				
+//				else if (theRoot.getRight().getBF() == 2)
+//				{
+//					theRoot= doubleRightRotation(theRoot);
+//				}
+				
+				else
+				{
+					theRoot= singleRightRotation(theRoot);
+				}
+				
+			}
+		}
+		
+		return theRoot;
+	}
+	
+	/**
+	 * @param nodo la raíz del árbol a balancear con rotación simple
+	 * @return la raíz del nuevo árbol que ha cambiado
+	 */
+	private AVLNode<T> singleLeftRotation (AVLNode<T> nodo)
+	{
+		AVLNode<T> aux= nodo.getLeft();
+		nodo.setLeft(aux.getRight());
+		aux.setRight(nodo);
+		
+		nodo.updateHeight();
+		aux.updateHeight();
+		
+		return aux;
+	}
+	
+	/**
+	 * @param nodo la raíz del árbol a balancear con rotación doble
+	 * @return la raíz del nuevo árbol que ha cambiado
+	 */
+	private AVLNode<T> doubleLeftRotation(AVLNode<T> nodo) 
+	{
+		//(doble rotación izquierda) Auxiliar apuntando al nodo derecho del nodo izquierdo de nodo
+		//Subárbol derecho del nodo izquierdo de nodo será el subárbol izquierdo de aux
+		//Subárbol izquierdo de aux será el subárbol izquierdo de nodo.
+		//Subárbol izquierdo de nodo será el subárbol derecho de aux.
+		//Subárbol derecho de aux será el nodo
+		//Actualizar alturas y BFs.
+//		
+//		AVLNode<T> aux= nodo.getLeft().getRight();
+//		nodo.getLeft().setRight(aux.getLeft());
+//		aux.setLeft(nodo.getLeft());
+//		nodo.setLeft(aux.getRight());
+//		aux.setRight(nodo);
+//		
+//		aux.getRight().updateHeight();
+//		aux.getLeft().updateHeight();
+////		nodo.updateHeight();
+//		aux.updateHeight();
+//		
+//		return aux;
+		
+		AVLNode<T> aux= nodo.getLeft().getRight();
+		nodo.getLeft().setRight(aux.getLeft());
+		aux.setLeft(nodo.getLeft());
+		nodo.setLeft(aux.getRight());
+		aux.setRight(nodo);
+		
+//		AVLNode<T> nodoReferencia= nodeToSearchOf(nodo);
+//		if (nodoReferencia != null)
+//		{
+//			if ((nodoReferencia.getInfo().compareTo(aux.getInfo()) > 0))
+//			{
+//				nodeToSearchOf(nodo).setLeft(aux);
+//			}
+//			
+//			else
+//			{
+//				nodeToSearchOf(nodo).setRight(aux);
+//			}
+//		}
+		
+		aux.getLeft().updateHeight();
+		aux.getRight().updateHeight();
+//		nodo.updateHeight();
+		aux.updateHeight();
+		
+		return aux;
+	}
+	
+	/**
+	 * @param nodo la raíz del árbol a balancear con rotación simple
+	 * @return la raíz del nuevo árbol que ha cambiado
+	 */
+	private AVLNode<T> singleRightRotation (AVLNode<T> nodo)
+	{
+		//(rotacion derecha) Reservamos un nodo auxiliar apuntando al hijo derecho del parámetro (nodo)
+		//El hijo derecho del nodo será el hijo izquierdo de aux
+		//El hijo izquierdo de aux será el nodo.
+		//Actualizar alturas de los nodos.
+		
+		AVLNode<T> aux= nodo.getRight();
+		nodo.setRight(aux.getLeft());
+		aux.setLeft(nodo);
+		
+		nodo.updateHeight();
+		aux.updateHeight();
+		
+		return aux;
+	}
+	
+	/**
+	 * @param nodo la raíz del árbol a balancear con rotación doble
+	 * @return la raíz del nuevo árbol que ha cambiado
+	 */
+	private AVLNode<T> doubleRightRotation(AVLNode<T> nodo) 
+	{
+		AVLNode<T> aux= nodo.getRight().getLeft();
+//		nodo.getRight().setLeft(aux.getRight());
+		nodo.getRight().setLeft(aux.getRight());
+		aux.setRight(nodo.getRight());
+//		aux.setRight(nodo.getRight());
+		nodo.setRight(aux.getLeft());
+		aux.setLeft(nodo);
+		
+//		AVLNode<T> nodoReferencia= nodeToSearchOf(nodo);
+//		
+//		if (nodoReferencia != null)
+//		{
+//			if (nodoReferencia.getInfo().compareTo(aux.getInfo()) > 0)
+//			{
+//				nodeToSearchOf(nodo).setLeft(aux);
+//			}
+//			else
+//			{
+//				nodeToSearchOf(nodo).setRight(aux);
+//			}
+//		}
+		
+		aux.getLeft().updateHeight();
+		aux.getRight().updateHeight();
+//		nodo.updateHeight();
+		aux.updateHeight();
+		
+		return aux;
+	}
+	
+	
+	public boolean remove (T info)
+	{
+		if (info == null || getRaiz() == null)
+		{
+			return false;
+		}
+		
+		else
+		{
+			AVLNode<T> raiz= (AVLNode<T>) getRaiz();
+			try 
+			{
+				setRaiz(removeRecursivo(raiz, info));
+			}
+			
+			catch (RuntimeException rE)
+			{
+				return false;
+			}
+			
+			return true;
+		}
+	}
+	
+	private AVLNode<T> removeRecursivo(AVLNode<T> root, T x)
+	{
+		if (root == null)
+		{
+			throw new RuntimeException();
+		}
+		
+		else
+		{
+			if (root.getInfo().compareTo(x) < 0)
+			{
+				root.setRight(removeRecursivo(root.getRight(), x));
+			}
+			
+			else if (root.getInfo().compareTo(x) > 0)
+			{
+				root.setLeft(removeRecursivo(root.getLeft(), x));
+			}
+			
+			else
+			{
+				if (root.getLeft() == null && root.getRight() == null)
+				{
+					return null;
+				}
+				
+				else if (root.getLeft() != null && root.getRight() == null)
+				{
+					return root.getLeft();
+				}
+				
+				else if (root.getLeft() == null && root.getRight() != null)
+				{
+					return root.getRight();
+				}
+				
+				else if (root.getLeft() != null && root.getRight() != null)
+				{
+					T maxNodo= getMaximo(root.getLeft());
+					root.setInfo(maxNodo);
+					root.setLeft(removeRecursivo(root.getLeft(), root.getInfo()));
+				}
+			}
+			return updateAndBalanceIfNecesary(root);
+		}
+	}
+	
+	protected AVLNode<T> getRaiz()
+	{
+		return (AVLNode<T>) getRaiz();
+	}
+	
+	protected void setRaiz(AVLNode<T> newRaiz)
+	{
+		AVLNode<T> raiz= (AVLNode<T>) getRaiz();
+		raiz= newRaiz;
+	}
+	
+//	/** Método que BUSCA y DEVUELVE aquel nodo cuya referencia apunta al parámetro, nodeToSearch.
+//	 * @param nodeToSearch es el nodo el cual queremos ver qué otro nodo apunta a éste.
+//	 * @return el nodo que apunta a nodeToSearch.
+//	 */
+//	private AVLNode<T> nodeToSearchOf(AVLNode<T> nodeToSearch)
+//	{
+//		if (nodeToSearch == null || getRaiz() == null)
+//		{
+//			return null;
+//		}
+//		
+//		AVLNode<T> raiz= (AVLNode<T>) getRaiz();
+//		return nodeToSearchOfRec(nodeToSearch, raiz);
+//	}
+
+//	private AVLNode<T> nodeToSearchOfRec(AVLNode<T> nodeToSearch, AVLNode<T> root) 
+//	{
+//		if (root.getLeft() == nodeToSearch || root.getRight() == nodeToSearch)
+//		{
+//			return root;
+//		}
+//		
+//		else
+//		{
+//			if (root.getInfo().compareTo(nodeToSearch.getInfo()) == 0)
+//			{
+//				return null; //se está buscando el mismo objeto.
+//			}
+//			
+//			else if (root.getInfo().compareTo(nodeToSearch.getInfo()) > 0)
+//			{
+//				root= nodeToSearchOfRec(nodeToSearch, root.getLeft());
+//			}
+//			
+//			else
+//			{
+//				root= nodeToSearchOfRec(nodeToSearch, root.getRight());
+//			}
+//		}
+//		
+//		return root;
+//	}
+	
+}
+

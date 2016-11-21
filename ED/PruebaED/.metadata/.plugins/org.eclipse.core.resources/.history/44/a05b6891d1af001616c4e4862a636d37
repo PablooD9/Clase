@@ -1,0 +1,116 @@
+package arbolesUO251017;
+
+import static org.junit.Assert.*;
+
+import org.junit.Before;
+import org.junit.Test;
+
+public class BinaryHeapTest {
+	
+	private int n0, n1, n2, n3, n4, n5, n6, n7, n8;
+	
+	private EDBinaryHeap<Integer> bH;
+	
+	@Before
+	public void setUp()
+	{
+		bH= new EDBinaryHeap<Integer>(12);
+		
+		n0= 0;
+		n1= 1;
+		n2= 2;
+		n3= 3;
+		n4= 4;
+		n5= 5;
+		n6= 6;
+		n7= 7;
+		n8= 8;
+	}
+
+//	@Test
+	public void testAdd() {
+		//Ejemplo transparencias Martín página 103
+		assertTrue(bH.add(13));
+		assertTrue(bH.add(21));
+		assertTrue(bH.add(16));
+		assertTrue(bH.add(24));
+		assertTrue(bH.add(31));
+		assertTrue(bH.add(25));
+		assertTrue(bH.add(50));
+		assertTrue(bH.add(65));
+		assertTrue(bH.add(18));
+		
+		System.out.println(bH.toString());
+	}
+	
+//	@Test
+	public void testPoll()
+	{	//Ejemplo transparencias Martín página 103
+		assertTrue(bH.add(13));
+		assertTrue(bH.add(21));
+		assertTrue(bH.add(16));
+		assertTrue(bH.add(24));
+		assertTrue(bH.add(31));
+		assertTrue(bH.add(25));
+		assertTrue(bH.add(50));
+		assertTrue(bH.add(65));
+		assertTrue(bH.add(18));
+		
+		System.out.println(bH.toString());
+		
+		assertEquals((Integer) 13, bH.poll());
+		
+		System.out.println(bH.toString());
+	}
+	
+	@Test
+	public void testRemove()
+	{
+		//Borrado de nodos que no existen, o de nulls.
+		assertFalse(bH.remove(10));
+		assertFalse(bH.remove(null));
+		
+		//Ejemplo transparencias Martín página 114
+		//Añadimos nodos al árbol
+		assertTrue(bH.add(3));
+		assertTrue(bH.add(4));
+		assertTrue(bH.add(12));
+		assertTrue(bH.add(6));
+		assertTrue(bH.add(5));
+		assertTrue(bH.add(16));
+		assertTrue(bH.add(15));
+		
+//		System.out.println(bH.toString());
+		
+		//Se borra la raíz (3). Entonces, lo que se hace es copiar el último
+		//elemento del array a la posición del nodo que borramos. Después,
+		//borramos el último elemento del array, y aplicamos las cribas
+		//ascendentes y descendentes, para reubicar al nodo.
+		assertTrue(bH.remove(4));
+		assertEquals(-1, bH.search(4)); //No encuentra el 4. Lo ha borrado bien.
+		
+//		System.out.println(bH.toString());
+		
+		//Se borran más nodos, y el sistema es el mismo que el anterior.
+		assertTrue(bH.remove(16)); //Se borra el último nodo del árbol. No debería hacer nada más.
+		assertEquals(-1, bH.search(16)); //No encuentra el 16. Lo ha borrado bien.
+		
+//		System.out.println(bH.toString());
+		
+		assertTrue(bH.remove(3)); //Se borra el nodo raíz.
+		assertEquals(-1, bH.search(3)); //No encuentra el 3. Lo ha borrado bien.
+		
+		System.out.println(bH.toString());
+		
+		assertTrue(bH.remove(6)); //Se borra el nodo 6.
+		assertEquals(-1, bH.search(6)); //No encuentra el 6. Lo ha borrado bien.
+		
+//		System.out.println(bH.toString());
+		
+		assertTrue(bH.remove(15)); //Se borra el nodo 12.
+		assertEquals(-1, bH.search(15)); //No encuentra el 12. Lo ha borrado bien.
+		
+		System.out.println(bH.toString());
+	}
+
+}

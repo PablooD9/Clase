@@ -73,7 +73,7 @@ public class testBSTree {
 		System.out.println(arbol.toString());
 	}
 	
-//	@Test
+	@Test
 	public void testSearch()
 	{
 		//Se intenta buscar un nodo null, o un nodo con el árbol vacío:
@@ -119,7 +119,7 @@ public class testBSTree {
 		assertEquals(null, arbol.search(n2));
 	}
 	
-//	@Test
+	@Test
 	public void testRemove()
 	{
 		//Intentamos borrar un nodo cuando no hay raíz (raiz==null) y un nodo null
@@ -175,7 +175,7 @@ public class testBSTree {
 		System.out.println(arbol.toString());
 	}
 	
-//	@Test
+	@Test
 	public void test2Remove()
 	{ //Ejercicio página 19
 		Integer n9= 9;
@@ -196,7 +196,7 @@ public class testBSTree {
 		System.out.println(arbol.toString());
 	}
 	
-//	@Test
+	@Test
 	public void testPreOrder()
 	{ //EJERCICIO PÁGINA 28 - APUNTES DE ÁRBOLES (MARTÍN)
 		// Se intenta mostrar el recorrido en preorden de un árbol vacío.
@@ -221,7 +221,7 @@ public class testBSTree {
 		arbol.preOrder();
 	}
 	
-//	@Test
+	@Test
 	public void test2PreOrder(){
 		assertTrue(arbol.add(n8));
 		assertTrue(arbol.add(n6));
@@ -248,7 +248,7 @@ public class testBSTree {
 		arbol.preOrder();
 	}
 	
-//	@Test
+	@Test
 	public void test3PreOrder()
 	{
 		Integer n10= 10;
@@ -269,10 +269,10 @@ public class testBSTree {
 		arbol.preOrder();
 	}
 	
-//	@Test
+	@Test
 	public void testPostOrder()
 	{ //EJERCICIO PÁGINA 28 - APUNTES DE ÁRBOLES (MARTÍN)
-		// Se intenta mostrar el recorrido en preorden de un árbol vacío.
+		// Se intenta mostrar el recorrido en postorden de un árbol vacío.
 		arbol.postOrder();
 		
 		assertTrue(arbol.add(n6));
@@ -294,7 +294,7 @@ public class testBSTree {
 		arbol.postOrder();
 	}
 	
-//	@Test
+	@Test
 	public void test2PostOrder(){
 		assertTrue(arbol.add(n8));
 		assertTrue(arbol.add(n6));
@@ -317,10 +317,12 @@ public class testBSTree {
 		Integer n13= 13;
 		assertTrue(arbol.add(n13));
 		
+		System.out.println(arbol.toString());
+		
 		arbol.postOrder();
 	}
 	
-//	@Test
+	@Test
 	public void test3PostOrder()
 	{
 		Integer n10= 10;
@@ -338,11 +340,13 @@ public class testBSTree {
 		assertTrue(arbol.add(n12));
 		assertTrue(arbol.add(n13));
 		
+		System.out.println(arbol.toString());
+		
 		arbol.postOrder();
 	}
 	
 	
-//	@Test
+	@Test
 	public void testInOrder()
 	{ //EJERCICIO PÁGINA 28 - APUNTES DE ÁRBOLES (MARTÍN)
 		// Se intenta mostrar el recorrido en preorden de un árbol vacío.
@@ -366,7 +370,7 @@ public class testBSTree {
 		arbol.inOrder();
 	}
 	
-//	@Test
+	@Test
 	public void test2InOrder()
 	{
 		assertTrue(arbol.add(n8));
@@ -393,7 +397,7 @@ public class testBSTree {
 		arbol.inOrder();
 	}
 	
-//	@Test
+	@Test
 	public void test3InOrder()
 	{
 		Integer n10= 10;

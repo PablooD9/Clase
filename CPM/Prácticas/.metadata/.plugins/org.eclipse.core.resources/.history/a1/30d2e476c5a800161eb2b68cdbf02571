@@ -1,0 +1,115 @@
+package igu;
+
+import java.awt.FlowLayout;
+
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
+
+import logica.Articulo;
+
+import javax.swing.JLabel;
+
+import java.awt.Font;
+
+import javax.swing.JTextField;
+
+@SuppressWarnings("serial")
+public class VentanaCarrito extends JDialog {
+
+	private final JPanel contentPanel = new JPanel();
+	private VentanaPrincipal vP;
+	private JScrollPane scrollPane;
+	private JLabel lblTotalAPagar;
+	private JTextField txFieldTotalAPagar;
+
+//	/**
+//	 * Launch the application.
+//	 */
+//	public static void main(String[] args) {
+//		try {
+//			Carrito dialog = new Carrito();
+//			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+//			dialog.setVisible(true);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
+
+	/**
+	 * Create the dialog.
+	 */
+	public VentanaCarrito(VentanaPrincipal vp) {
+		vP= vp;
+		setBounds(100, 100, 450, 300);
+		getContentPane().setLayout(null);
+		contentPanel.setBounds(0, 0, 434, 229);
+		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		getContentPane().add(contentPanel);
+		contentPanel.setLayout(null);
+		contentPanel.add(getScrollPane());
+		contentPanel.add(getLblTotalAPagar());
+		contentPanel.add(getTxFieldTotalAPagar());
+		{
+			JPanel buttonPane = new JPanel();
+			buttonPane.setBounds(0, 229, 434, 33);
+			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
+			getContentPane().add(buttonPane);
+			{
+				JButton returnButton = new JButton("Volver");
+				returnButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e)
+					{
+						dispose();
+					}
+				});
+				returnButton.setActionCommand("Cancel");
+				buttonPane.add(returnButton);
+			}
+		}
+	}
+	private JScrollPane getScrollPane() {
+		if (scrollPane == null) {
+			scrollPane = new JScrollPane();
+			scrollPane.setBounds(0, 11, 284, 146);
+			{
+				JTextArea txtArea = new JTextArea();
+				txtArea.setEditable(false);
+				String cadena= "";
+				for (Articulo a: vP.getPedido().getArticulosPedido())
+				{
+					cadena+= a.toString2();
+				}
+				txtArea.setText(cadena);
+				txtArea.setLineWrap(true);
+				scrollPane.setViewportView(txtArea);
+			}
+		}
+		return scrollPane;
+	}
+	private JLabel getLblTotalAPagar() {
+		if (lblTotalAPagar == null) {
+			lblTotalAPagar = new JLabel("Total a pagar:");
+			lblTotalAPagar.setFont(new Font("Tahoma", Font.BOLD, 13));
+			lblTotalAPagar.setBounds(41, 168, 106, 14);
+		}
+		return lblTotalAPagar;
+	}
+	private JTextField getTxFieldTotalAPagar() {
+		if (txFieldTotalAPagar == null) {
+			txFieldTotalAPagar = new JTextField();
+			txFieldTotalAPagar.setEditable(false);
+			txFieldTotalAPagar.setBounds(198, 168, 86, 20);
+			txFieldTotalAPagar.setColumns(10);
+			txFieldTotalAPagar.setText(vP.getPedido().calcularTotalSinIva()+"");
+		}
+		return txFieldTotalAPagar;
+	}
+}

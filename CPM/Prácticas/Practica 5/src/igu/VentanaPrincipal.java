@@ -71,6 +71,7 @@ public class VentanaPrincipal extends JFrame {
 	private int numArboles;
 	private JMenuItem itNumCasillas;
 	private int numCasillas;
+	private boolean prizeTaken;
 	/**
 	 * Launch the application.
 	 */
@@ -106,8 +107,8 @@ public class VentanaPrincipal extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		contentPane.add(getPnLiebre(numCasillas));
-		contentPane.add(getPnTortuga(numCasillas));
+		contentPane.add(getPnLiebre());
+		contentPane.add(getPnTortuga());
 		contentPane.add(getLbLiebre());
 		contentPane.add(getLbTortuga());
 		contentPane.add(getBtDado());
@@ -118,14 +119,16 @@ public class VentanaPrincipal extends JFrame {
 		contentPane.add(getTxPuntosLiebre());
 		contentPane.add(getTxtPuntosTortuga());
 		setLocationRelativeTo(null);
-		modificarPanel(pnLiebre, false);
-		modificarPanel(pnTortuga, false);
 		asociarEventosBotones(pnLiebre);
 		asociarEventosBotones(pnTortuga);
 		numArboles= carrera.getLiebre().getCalleAsignada().getTrees();
 		creaBotonesPanel(pnLiebre);
 		creaBotonesPanel(pnTortuga);
 		pintarCorredores();
+		
+		deshabilitarPaneles();
+		
+		prizeTaken= false;
 	}
 	private JMenuBar getMenuBar_1() {
 		if (menuBar == null) {
@@ -186,18 +189,20 @@ public class VentanaPrincipal extends JFrame {
 	private JMenuItem getItContenidos() {
 		if (itContenidos == null) {
 			itContenidos = new JMenuItem("Contenidos");
+			itContenidos.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, InputEvent.CTRL_MASK));
 			itContenidos.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					JOptionPane.showMessageDialog(null, "Ayuda no disponible demomento", "Contenidos de la ayuda", 1);
 				}
 			});
-			itContenidos.setMnemonic('C');
+			itContenidos.setMnemonic('T');
 		}
 		return itContenidos;
 	}
 	private JMenuItem getItAcercaDe() {
 		if (itAcercaDe == null) {
 			itAcercaDe = new JMenuItem("Acerca de");
+			itAcercaDe.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.CTRL_MASK));
 			itAcercaDe.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					mostrarAcercaDe();
@@ -226,37 +231,23 @@ public class VentanaPrincipal extends JFrame {
 		}
 		return separator_1;
 	}
-	private JPanel getPnLiebre(int numBotones) {
+	private JPanel getPnLiebre() {
 		if (pnLiebre == null) {
 			pnLiebre = new JPanel();
 			pnLiebre.setBackground(Color.BLUE);
 			pnLiebre.setBorder(new LineBorder(Color.BLUE, 10));
 			pnLiebre.setBounds(95, 105, 775, 80);
 			pnLiebre.setLayout(new GridLayout(1, numCasillas, 0, 0));
-//			for(int i=0; i < numBotones; i++){
-//				JButton bt = new JButton();
-//				bt.setBackground(Color.BLACK);
-//				bt.setActionCommand(String.valueOf(i));
-//				bt.addActionListener(pB);
-//				pnLiebre.add(bt);
-//			}
 		}
 		return pnLiebre;
 	}
-	private JPanel getPnTortuga(int numBotones) {
+	private JPanel getPnTortuga() {
 		if (pnTortuga == null) {
 			pnTortuga = new JPanel();
 			pnTortuga.setBorder(new LineBorder(Color.BLUE, 10));
 			pnTortuga.setBackground(Color.BLUE);
 			pnTortuga.setBounds(95, 184, 775, 80);
 			pnTortuga.setLayout(new GridLayout(1, numCasillas, 0, 0));
-//			for(int i=0; i < numBotones; i++){
-//				JButton bt = new JButton();
-//				bt.setBackground(Color.BLACK);
-//				bt.setActionCommand(String.valueOf(i));
-//				bt.addActionListener(pB);
-//				pnTortuga.add(bt);
-//			}
 		}
 		return pnTortuga;
 	}
@@ -281,10 +272,11 @@ public class VentanaPrincipal extends JFrame {
 //					{
 					carrera.lanzarDado();
 						int numero= carrera.getNumeroDado();
-						txDado.setText(String.valueOf(numero));
+						txDado.setText(numero+"");
 						habilitarPanelCorredorActivo(carrera.getCorredorActivo());
 						habilitarFlechaCorredorActivo(carrera.getCorredorActivo());
 						btDado.setEnabled(false);
+						
 //					}
 //					else
 //					{
@@ -379,11 +371,10 @@ public class VentanaPrincipal extends JFrame {
 	
 	private void modificarPanel(JPanel panel, boolean habilitado)
 	{
-		Component[] botones= panel.getComponents(); //útil para evaluar muchos componentes dentro de un contenedor.
-		for (int i=0; i< botones.length; i++)
+		Component[] botones= panel.getComponents();
+		for (int i=0; i< panel.getComponentCount(); i++)
 		{
-			JButton boton= (JButton) botones[i];
-			boton.setEnabled(habilitado);
+			botones[i].setEnabled(habilitado);
 		}
 	}
 	
@@ -476,6 +467,7 @@ public class VentanaPrincipal extends JFrame {
 		String imagen2= "/img/arbol.JPG";
 		String imagen3= "/img/liebre_durmiendo.jpg";
 		String imagen4= "/img/blackhole.png";
+		String imagen5= "/img/premio.png";
 		
 		for (int i=0; i<botones.length;i++)
 		{
@@ -488,6 +480,32 @@ public class VentanaPrincipal extends JFrame {
 //					  boton.setDisabledIcon(imagen3);
 					  setImagenAdaptada(boton, imagen3);
 				  }
+				  
+				  else if (corredor.getCalleAsignada().getCasilla(i).hasPrize())
+				  {
+					  if (prizeTaken == false)
+					  {
+						  setImagenAdaptada(boton, imagen);
+						  int incremento= corredor.getPuntuacion() - 50;
+						  corredor.incrementaPuntuacion(incremento);
+						  
+						  JOptionPane.showMessageDialog(contentPane, "¡Enhorabuena!\n La "+corredor.getNombre()+
+									" ha conseguido "+incremento+" puntos");
+						  
+						  if (corredor.getNombre() == "tortuga")
+						  {
+							  getTxtPuntosTortuga().setText(corredor.getPuntuacion() + "");
+						  }
+						  
+						  else
+						  {
+							  getTxPuntosLiebre().setText(corredor.getPuntuacion() + "");
+						  }
+						  
+						  prizeTaken= true;
+					  }
+				  }
+				  
 				  else
 				  {
 //					  boton.setIcon(imagen);
@@ -511,6 +529,19 @@ public class VentanaPrincipal extends JFrame {
 		    		  setImagenAdaptada(boton, imagen4);
 		    	  }
 		    	  
+		    	  else if (corredor.getCalleAsignada().getCasilla(i).hasPrize())
+		    	  {
+		    		  if (prizeTaken == false)
+		    		  {
+		    			  setImagenAdaptada(boton, imagen5);
+		    		  }
+		    		  
+		    		  else
+		    		  {
+		    			  boton.setIcon(null);
+		    		  }
+		    	  }
+		    	  
 		    	  else
 		    	  {
 		    		  boton.setIcon(null);
@@ -527,6 +558,7 @@ public class VentanaPrincipal extends JFrame {
 	
 	private void inicializar(int numeroArboles, int numeroCasillas)
 	{
+		prizeTaken= false;
 		//parte lógica:
 		carrera.inicializarJuego(numeroArboles, numeroCasillas);
 		//parte interfaz:
@@ -536,8 +568,10 @@ public class VentanaPrincipal extends JFrame {
 		lbTortuga.setVisible(false);
 	}
 	
-	private JLabel getLbLiebre() {
-		if (lbLiebre == null) {
+	private JLabel getLbLiebre() 
+	{
+		if (lbLiebre == null) 
+		{
 			lbLiebre = new JLabel("");
 			lbLiebre.setVisible(false);
 			lbLiebre.setHorizontalAlignment(SwingConstants.CENTER);
@@ -547,28 +581,21 @@ public class VentanaPrincipal extends JFrame {
 		return lbLiebre;
 	}
 	
-	class ProcesaBoton implements ActionListener
-	{
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			JButton bt= (JButton) e.getSource();
-			jugar(Integer.parseInt(bt.getActionCommand()));
-		}
-	}
-	
 	private void asociarEventosBotones(JPanel panel)
 	{
-		for (int i=0; i< panel.getComponentCount(); i++)
+		Component[]	botones= panel.getComponents();
+		for (int i=0; i< botones.length; i++)
 		{
-			JButton bt= (JButton) panel.getComponents()[i];
-			bt.setActionCommand(String.valueOf(i));
-			bt.addActionListener(pB);
+			JButton boton= (JButton) botones[i];
+			boton.setActionCommand(i + "");
+			boton.addActionListener(pB);
 		}
 	}
 	
 	private JMenuItem getItNumArboles() {
 		if (itNumArboles == null) {
 			itNumArboles = new JMenuItem("N\u00FAmero de \u00E1rboles");
+			itNumArboles.setMnemonic('B');
 			itNumArboles.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					
@@ -606,6 +633,7 @@ public class VentanaPrincipal extends JFrame {
 				if (numArboles != null)
 				{
 					numArboles= "";
+					numArboles2= -1;
 				}
 			}
 			
@@ -649,9 +677,19 @@ public class VentanaPrincipal extends JFrame {
 		return boton;
 	}
 	
+	class ProcesaBoton implements ActionListener
+	{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			JButton boton= (JButton) e.getSource();
+			jugar(Integer.parseInt(boton.getActionCommand()));
+		}
+	}
+	
 	private JMenuItem getItNumCasillas() {
 		if (itNumCasillas == null) {
 			itNumCasillas = new JMenuItem("N\u00FAmero de casillas");
+			itNumCasillas.setMnemonic('L');
 			itNumCasillas.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) 
 				{
@@ -665,12 +703,11 @@ public class VentanaPrincipal extends JFrame {
 							creaBotonesPanel(pnLiebre);
 							creaBotonesPanel(pnTortuga);
 							inicializar(numArboles, numCasillas);
-							
 						}
 					}
 				}
 			});
-			itNumCasillas.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
+			itNumCasillas.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.CTRL_MASK));
 		}
 		return itNumCasillas;
 	}
@@ -685,7 +722,7 @@ public class VentanaPrincipal extends JFrame {
 		{
 			try
 			{
-				numCasillas= JOptionPane.showInputDialog(contentPane, "Elige el número de casillas");
+				numCasillas= JOptionPane.showInputDialog(contentPane, "Elige el número de casillas: [10-14]");
 				numCasillas2= Integer.parseInt(numCasillas);
 			} catch (NumberFormatException nFE)
 			{

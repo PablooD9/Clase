@@ -373,6 +373,7 @@ public class VentanaPrincipal extends JFrame {
 		contentPane.add(getBarraEstado(), java.awt.BorderLayout.SOUTH);
 		contentPane.add(getPnTextos(), java.awt.BorderLayout.CENTER);
 		setContentPane(contentPane);
+		btIngles.grabFocus();
 	}
 	
 	class ProcesaElFoco implements FocusListener

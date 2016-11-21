@@ -18,6 +18,7 @@ import java.io.IOException;
 
 import logica.Pedido;
 
+@SuppressWarnings("serial")
 public class VentanaConfirmacion extends JDialog {
 	private JLabel lbOk;
 	private JLabel lbAviso;
@@ -85,6 +86,7 @@ public class VentanaConfirmacion extends JDialog {
 	private JLabel getLbAviso() {
 		if (lbAviso == null) {
 			lbAviso = new JLabel("Estamos procesando su pedido");
+			lbAviso.setHorizontalAlignment(SwingConstants.CENTER);
 			lbAviso.setFont(new Font("Tw Cen MT", Font.BOLD, 18));
 			lbAviso.setBounds(135, 62, 255, 29);
 		}
@@ -114,11 +116,11 @@ public class VentanaConfirmacion extends JDialog {
 			btnFinalizar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) 
 				{
-					vR.getVP().getPedido().grabarPedido(txCodigo.getText());
+					vR.getVP().getPedido().grabarPedido(txCodigo.getText(), getDatosPersona());
 					vR.getVP().getPedido().inicializar();
 					dispose();
 					vR.dispose(); //borra la de Registro.
-					vP.inicializar(); //borra la ventana Principal.
+					vP.inicializar(); //reinicia la ventana Principal.
 				}
 			});
 			btnFinalizar.setMnemonic('F');
@@ -140,16 +142,6 @@ public class VentanaConfirmacion extends JDialog {
 		return codigo;
 	}
 	
-	private void mostrarVentanaPrincipal()
-	{
-		try
-		{
-			VentanaPrincipal vP= new VentanaPrincipal();
-			vP.setVisible(true);
-		} catch(IOException ioe){
-			ioe.printStackTrace();
-		}
-	}
 	private JLabel getLblPrecioDelPedido() {
 		if (lblPrecioDelPedido == null) {
 			lblPrecioDelPedido = new JLabel("Precio del pedido:");
@@ -210,5 +202,13 @@ public class VentanaConfirmacion extends JDialog {
 	public VentanaRegistro getVentanaRegistro()
 	{
 		return vR;
+	}
+	
+	private String getDatosPersona()
+	{
+		String nombre= vR.getNombre();
+		String apellidos= vR.getApellidos();
+		
+		return apellidos+", "+nombre;
 	}
 }

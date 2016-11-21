@@ -44,6 +44,7 @@ public class Calle {
 			blackHole= -1;
 			hasBlackHole= false;
 		}
+		
 	}
 	
 //	public Calle (boolean isBlackHole, boolean isTree, int numCasillas) {
@@ -156,4 +157,37 @@ public class Calle {
 	{
 		return posicion_meta;
 	}
-}
+	
+	public void colocarPremio()
+	{
+		boolean isPlaced= false;
+		
+		while (!isPlaced)
+		{
+			Random random= new Random();
+			int posicion= random.nextInt(dim);
+			if (posicion == 0)
+			{
+				posicion++;
+			}
+			
+			if (!casillas[posicion].hasBlackHole() && !casillas[posicion].hasTree())
+			{
+				casillas[posicion].setPrize(true);
+				isPlaced= true;
+			}
+			
+			else if (((getTrees() + 1) == dim - 2) && hasBlackHole)
+			{
+				isPlaced= true;
+			}
+		}
+//			for (int i=0; i<casillas.length; i++)
+//			{
+//				if (!casillas[i].hasBlackHole() && !casillas[i].hasTree())
+//				{
+//					
+//				}
+//			}
+		}
+	}

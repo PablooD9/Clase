@@ -1,0 +1,407 @@
+package igu;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+
+import java.awt.Font;
+import java.awt.Color;
+
+import javax.swing.JComboBox;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+
+import logica.Articulo;
+import logica.Catalogo;
+import logica.Pedido;
+
+import org.jvnet.substance.*;
+import java.awt.Toolkit;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+public class VentanaPrincipal extends JFrame {
+
+	private JPanel panelPrincipal;
+	private JLabel lbLogo;
+	private JLabel lbTitulo;
+	private JLabel lbArticulos;
+	private JLabel lbUnidades;
+	private JComboBox<Articulo> cbArticulos;
+	private JTextField txUnidades;
+	private JButton btAñadir;
+	private JLabel lblPrecioPedido;
+	private JTextField txPrecio;
+	private JButton btnCancelar;
+	private JButton btnSiguiente;
+	private Catalogo catalogo;
+	private Pedido pedido;
+	private JButton btnQuitar;
+	private JLabel lbCarrito;
+	private JButton btCarrito;
+	private JLabel lblCarrito;
+	private ProcesaBoton pB;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					JFrame.setDefaultLookAndFeelDecorated(true);
+					JDialog.setDefaultLookAndFeelDecorated(true); //"Déjame cambiar el Look and Feel
+																//de JFrame y JDialog"
+					SubstanceLookAndFeel.setSkin("org.jvnet.substance.skin.MagmaSkin");
+					VentanaPrincipal frame = new VentanaPrincipal(); //Fija el Skin que yo quiero
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 * @throws IOException 
+	 */
+	public VentanaPrincipal() throws IOException {
+		setResizable(false);
+		setIconImage(Toolkit.getDefaultToolkit().getImage(VentanaPrincipal.class.getResource("/img/logo.jpg")));
+		catalogo= new Catalogo();
+		pedido= new Pedido(null);
+		pB= new ProcesaBoton();
+		setTitle("Venta de accesorios de ordenador");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 523, 443);
+		panelPrincipal = new JPanel();
+		panelPrincipal.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(panelPrincipal);
+		panelPrincipal.setLayout(null);
+		panelPrincipal.add(getLbLogo());
+		panelPrincipal.add(getLabel_1());
+		panelPrincipal.add(getLabel_2());
+		panelPrincipal.add(getLabel_3());
+		panelPrincipal.add(getCbArticulos());
+		panelPrincipal.add(getTxUnidades());
+		panelPrincipal.add(getBtAñadir());
+		panelPrincipal.add(getLblPrecioPedido());
+		panelPrincipal.add(getTextField_1());
+		panelPrincipal.add(getBtnCancelar());
+		panelPrincipal.add(getBtnSiguiente());
+		panelPrincipal.add(getBtnQuitar());
+//		panelPrincipal.add(getLbCarrito());
+		panelPrincipal.add(getBtCarrito());
+		panelPrincipal.add(getLblCarrito());
+		setLocationRelativeTo(null);
+	}
+	
+	public Pedido getPedido()
+	{
+		return pedido;
+	}
+	
+	private JLabel getLbLogo() {
+		if (lbLogo == null) {
+			lbLogo = new JLabel("");
+			lbLogo.setHorizontalAlignment(SwingConstants.CENTER);
+			lbLogo.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/img/logo.jpg")));
+			lbLogo.setBounds(10, 10, 166, 147);
+		}
+		return lbLogo;
+	}
+	private JLabel getLabel_1() {
+		if (lbTitulo == null) {
+			lbTitulo = new JLabel("PC ACCESORIOS");
+			lbTitulo.setHorizontalAlignment(SwingConstants.CENTER);
+			lbTitulo.setForeground(Color.MAGENTA);
+			lbTitulo.setFont(new Font("Sylfaen", Font.BOLD, 22));
+			lbTitulo.setBounds(186, 28, 200, 35);
+		}
+		return lbTitulo;
+	}
+	private JLabel getLabel_2() throws IOException {
+		if (lbArticulos == null) {
+			lbArticulos = new JLabel("Art\u00EDculos:");
+			lbArticulos.setLabelFor(getCbArticulos());
+			lbArticulos.setDisplayedMnemonic('A');
+			lbArticulos.setFont(new Font("Tahoma", Font.PLAIN, 14));
+			lbArticulos.setBounds(10, 182, 200, 22);
+		}
+		return lbArticulos;
+	}
+	private JLabel getLabel_3() {
+		if (lbUnidades == null) {
+			lbUnidades = new JLabel("Unidades:");
+			lbUnidades.setLabelFor(getTxUnidades());
+			lbUnidades.setDisplayedMnemonic('U');
+			lbUnidades.setFont(new Font("Tahoma", Font.PLAIN, 14));
+			lbUnidades.setBounds(288, 182, 75, 22);
+		}
+		return lbUnidades;
+	}
+	private JComboBox<Articulo> getCbArticulos() {
+		if (cbArticulos == null) {
+			cbArticulos = new JComboBox<Articulo>();
+			cbArticulos.setBounds(10, 215, 244, 22);
+			cbArticulos.setModel(new DefaultComboBoxModel<Articulo>(catalogo.getArticulos()));
+		}
+		return cbArticulos;
+	}
+	private JTextField getTxUnidades() 
+	{
+		if (txUnidades == null) 
+		{
+			txUnidades = new JTextField();
+			txUnidades.addFocusListener(new FocusAdapter()
+			{
+				@Override
+				public void focusGained(FocusEvent arg0)
+				{
+					txUnidades.setText("1");
+					txUnidades.selectAll(); //Selecciona todo lo que hay en el textField.
+				}
+				@Override
+				public void focusLost(FocusEvent arg0) 
+				{
+					boolean error= false;
+					int unidades= 0;
+					try
+					{
+						unidades= Integer.parseInt(txUnidades.getText());
+					} catch(NumberFormatException nfe)
+					{
+						error= true;
+					}
+					if ((error) || (unidades <=0))
+					{
+						txUnidades.grabFocus();
+						txUnidades.setText("");
+					}
+				}
+			});
+			txUnidades.setFont(new Font("Tahoma", Font.BOLD, 13));
+			txUnidades.setBounds(288, 215, 89, 22);
+			txUnidades.setColumns(10);
+		}
+		return txUnidades;
+	}
+	
+	private JButton getBtAñadir() 
+	{
+		if (btAñadir == null)
+		{
+			btAñadir = new JButton("+");
+			btAñadir.setToolTipText("A\u00F1ade un art\u00EDculo al pedido");
+			btAñadir.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) 
+				{
+					if(!txUnidades.getText().equals(""))
+					{
+						Articulo articulo= (Articulo) getCbArticulos().getSelectedItem();
+						int unidades= Integer.parseInt(txUnidades.getText());
+						pedido.add(articulo, unidades);
+						float precioPedido= pedido.calcularTotalSinIva();
+						txPrecio.setText(String.valueOf(precioPedido));
+						if (articulo.getUnidades() >= 10)
+						{
+							JOptionPane.showMessageDialog(panelPrincipal, "Descuento del 15% aplicado"
+									+ " al artículo: "+articulo);
+						}
+						if (!btnSiguiente.isEnabled())
+						{
+							btnSiguiente.setEnabled(true);
+						}
+						if (Double.parseDouble(txPrecio.getText()) == 0.0)
+						{
+							btnSiguiente.setEnabled(false);
+						}
+					}
+					else
+						txUnidades.grabFocus();
+				}
+			});
+			btAñadir.setBounds(387, 203, 47, 23);
+		}
+		return btAñadir;
+	}
+	private JLabel getLblPrecioPedido() 
+	{
+		if (lblPrecioPedido == null) {
+			lblPrecioPedido = new JLabel("Precio pedido:");
+			lblPrecioPedido.setFont(new Font("Tahoma", Font.PLAIN, 14));
+			lblPrecioPedido.setBounds(288, 253, 138, 22);
+		}
+		return lblPrecioPedido;
+	}
+	private JTextField getTextField_1() 
+	{
+		if (txPrecio == null) {
+			txPrecio = new JTextField();
+			txPrecio.setEditable(false);
+			txPrecio.setBounds(288, 286, 138, 22);
+			txPrecio.setColumns(10);
+		}
+		return txPrecio;
+	}
+	private JButton getBtnCancelar() 
+	{
+		if (btnCancelar == null) {
+			btnCancelar = new JButton("Cancelar");
+			btnCancelar.setMnemonic('C');
+			btnCancelar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					System.exit(0);
+				}
+			});
+			btnCancelar.setBounds(408, 358, 89, 23);
+		}
+		return btnCancelar;
+	}
+	private JButton getBtnSiguiente() 
+	{
+		if (btnSiguiente == null) {
+			btnSiguiente = new JButton("Siguiente");
+			btnSiguiente.setEnabled(false);
+			btnSiguiente.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) 
+				{
+					mostrarVentanaRegistro();
+				}
+			});
+			btnSiguiente.setMnemonic('S');
+			btnSiguiente.setBounds(309, 358, 89, 23);
+		}
+		return btnSiguiente;
+	}
+	
+	private void mostrarVentanaRegistro()
+	{
+		VentanaRegistro vr= new VentanaRegistro(this);
+		vr.setModal(true);
+		vr.setLocationRelativeTo(this);
+		vr.setVisible(true);	
+	}
+	
+	private JButton getBtnQuitar() {
+		if (btnQuitar == null) {
+			btnQuitar = new JButton("-");
+			btnQuitar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) 
+				{
+					if(!txUnidades.getText().equals(""))
+					{
+						Articulo articulo= (Articulo)getCbArticulos().getSelectedItem();
+						int unidades= Integer.parseInt(txUnidades.getText());
+//						if (articulo.getUnidades() > 0)
+//						{
+							pedido.remove(articulo, unidades);
+//						}
+						
+						float precioPedido= pedido.calcularTotalSinIva();
+						txPrecio.setText(String.valueOf(precioPedido));
+						if (Double.parseDouble(txPrecio.getText()) == 0.0)
+						{
+							btnSiguiente.setEnabled(false);
+						}
+					}
+				}
+			});
+			btnQuitar.setBounds(387, 230, 47, 23);
+		}
+		return btnQuitar;
+	}
+	
+	public void inicializar()
+	{
+		txUnidades.setText("");
+		txPrecio.setText("");
+		btnSiguiente.setEnabled(false);
+		cbArticulos.setSelectedIndex(0);
+		
+		pedido.inicializar();
+	}
+	
+	//PONER MENSAJE EN EL METODO DE AÑADIR. ADEMÁS PONER TAMBIÉN LAS CONDICIONES DE <10 Y >=10
+	//EN DICHO MÉTODO.
+	//BOTÓN SIGUIENTE DEBE DESACTIVARSE CUANDO EL PRECIOPEDIDO SEA 0.0 (hecho)
+	
+//	private JLabel getLbCarrito() {
+//		if (lbCarrito == null) {
+//			lbCarrito = new JLabel("");
+//			lbCarrito.setLabelFor(lbCarrito);
+//			lbCarrito.setDisplayedMnemonic('C');
+//			lbCarrito.addMouseListener(new MouseAdapter() {
+//				@Override
+//				public void mouseClicked(MouseEvent arg0) 
+//				{
+//					mostrarCarrito();
+//				}
+//			});
+//			lbCarrito.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/img/logo.jpg")));
+//			lbCarrito.setBounds(288, 102, 61, 58);
+//		}
+//		return lbCarrito;
+//	}
+	
+	private void mostrarCarrito()
+	{
+		VentanaCarrito carrito= new VentanaCarrito(this);
+		carrito.setModal(true);
+		carrito.setLocationRelativeTo(this);
+		carrito.setVisible(true);	
+	}
+	
+	private JButton getBtCarrito() {
+		if (btCarrito == null) {
+			btCarrito = new JButton("");
+			btCarrito.setToolTipText("Carrito de la compra");
+			btCarrito.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/img/carro.jpg")));
+			btCarrito.setContentAreaFilled(false);
+			btCarrito.setBorderPainted(false);
+			btCarrito.setBounds(442, 84, 40, 53);
+			btCarrito.addActionListener(pB);
+		}
+		return btCarrito;
+	}
+	
+	class ProcesaBoton implements ActionListener
+	{
+		@Override
+		public void actionPerformed(ActionEvent e) 
+		{
+			mostrarCarrito();
+		}
+	}
+	
+	private JLabel getLblCarrito() {
+		if (lblCarrito == null) {
+			lblCarrito = new JLabel("Carrito");
+			lblCarrito.setLabelFor(getBtCarrito());
+			lblCarrito.setDisplayedMnemonic('C');
+			lblCarrito.setFont(new Font("Tahoma", Font.BOLD, 11));
+			lblCarrito.setHorizontalAlignment(SwingConstants.CENTER);
+			lblCarrito.setBounds(432, 133, 61, 24);
+		}
+		return lblCarrito;
+	}
+}

@@ -42,6 +42,7 @@ public class Carrera {
 		Random random= new Random();
 		boolean calleElegida= random.nextBoolean();
 		numeroCasillas= numCasillas;
+		boolean premio= random.nextBoolean();
 		
 		if (calleElegida)
 		{
@@ -53,6 +54,16 @@ public class Carrera {
 		{
 			liebre = new Corredor(new Calle(false, true, numArboles, numCasillas),"liebre","liebre.jpg",4);
 			tortuga = new Corredor(new Calle(true, false, 0, numCasillas),"tortuga","tortuga.jpg",2);
+		}
+		
+		if (premio)
+		{
+			liebre.getCalleAsignada().colocarPremio();
+		}
+		
+		else
+		{
+			tortuga.getCalleAsignada().colocarPremio();
 		}
 		
 		numeroDado = 0;

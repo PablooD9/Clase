@@ -24,6 +24,9 @@ import javax.swing.JButton;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -111,7 +114,7 @@ public class VentanaRegistro extends JDialog {
 	private JPanel getPanelSexo() {
 		if (panelSexo == null) {
 			panelSexo = new JPanel();
-			panelSexo.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Sexo", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 255)));
+			panelSexo.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Sexo", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 255)));
 			panelSexo.setBounds(27, 71, 177, 82);
 			panelSexo.setLayout(null);
 			panelSexo.add(getRbHombre());
@@ -259,7 +262,6 @@ public class VentanaRegistro extends JDialog {
 		if (btCancelar == null) 
 		{
 			btCancelar = new JButton("Cancelar");
-			btCancelar.setMnemonic('L');
 			btCancelar.addActionListener(new ActionListener()
 			{
 				public void actionPerformed(ActionEvent e)
@@ -277,7 +279,6 @@ public class VentanaRegistro extends JDialog {
 		if (btSiguiente == null) 
 		{
 			btSiguiente = new JButton("Siguiente");
-			btSiguiente.setMnemonic('T');
 			btSiguiente.addActionListener(new ActionListener() 
 			{
 				public void actionPerformed(ActionEvent e) 
@@ -310,13 +311,12 @@ public class VentanaRegistro extends JDialog {
 	private boolean checkTextField(JTextField field)
 	{
 		String cadena;
-		cadena= String.valueOf(field.getText());
+		cadena= field.getText();
 		if (cadena.isEmpty())
 		{
 			return false;
 		}
-		else
-			return true;
+		return true;
 	}
 	
 	private boolean checkPassField(JPasswordField field)
@@ -327,8 +327,7 @@ public class VentanaRegistro extends JDialog {
 		{
 			return false;
 		}
-		else
-			return true;
+		return true;
 	}
 	
 	private boolean checkPasswords(JPasswordField field1, JPasswordField field2)
@@ -340,7 +339,7 @@ public class VentanaRegistro extends JDialog {
 		{
 			return true;
 		}
-		else return false;
+		return false;
 	}
 	
 	private JLabel getLbApellidos() {
@@ -370,17 +369,18 @@ public class VentanaRegistro extends JDialog {
 		vc.setVisible(true);	
 	}
 	
-	private void mostrarVentanaPrincipal()
-	{
-		try
-		{
-			VentanaPrincipal vP= new VentanaPrincipal();
-			vP.setVisible(true);
-			VentanaRegistro.this.dispose();
-		} catch(IOException ioe){
-			ioe.printStackTrace();
-		}
-	}
+//	private void mostrarVentanaPrincipal()
+//	{
+//		try
+//		{
+//			VentanaPrincipal vP= new VentanaPrincipal();
+//			vP.setVisible(true);
+//			VentanaRegistro.this.dispose();
+//		} catch(IOException ioe){
+//			ioe.printStackTrace();
+//		}
+//	}
+	
 	private JLabel getLbDias() {
 		if (lbDias == null) {
 			lbDias = new JLabel("D\u00EDa");
@@ -407,6 +407,16 @@ public class VentanaRegistro extends JDialog {
 			lbAño.setBounds(206, 21, 36, 14);
 		}
 		return lbAño;
+	}
+	
+	public String getNombre()
+	{
+		return getTxNombre().getText();
+	}
+	
+	public String getApellidos()
+	{
+		return getTxApellidos().getText();
 	}
 	
 	public String toString()

@@ -11,7 +11,6 @@
 <fullyQualifiedTypeName name="java.io.FileReader"/>
 <fullyQualifiedTypeName name="java.io.IOException"/>
 <fullyQualifiedTypeName name="logica.Catalogo"/>
-<fullyQualifiedTypeName name="org.jvnet.substance.SubstanceLookAndFeel"/>
 <fullyQualifiedTypeName name="logica.Articulo"/>
 <fullyQualifiedTypeName name="igu.VentanaPrincipal"/>
 <fullyQualifiedTypeName name="igu.VentanaRegistro"/>
@@ -29,4 +28,8 @@
 <fullyQualifiedTypeName name="javax.swing.UIManager"/>
 <fullyQualifiedTypeName name="java.util.Properties"/>
 <fullyQualifiedTypeName name="java.awt.Image"/>
+<fullyQualifiedTypeName name="java.awt.event.KeyAdapter"/>
+<fullyQualifiedTypeName name="java.awt.event.KeyListener"/>
+<fullyQualifiedTypeName name="org.jvnet.substance.SubstanceLookAndFeel"/>
+<fullyQualifiedTypeName name="java.awt.event.FocusListener"/>
 </qualifiedTypeNameHistroy>

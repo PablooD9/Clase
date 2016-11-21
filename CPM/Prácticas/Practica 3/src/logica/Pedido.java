@@ -40,6 +40,7 @@ public class Pedido {
 			articulo.setUnidades(unidades);
 			articulosPedido.add(articulo);
 		}
+		
 		else
 		{
 			int totalUnidades = articuloEnPedido.getUnidades() + unidades;
@@ -95,12 +96,10 @@ public class Pedido {
 		return calcularTotalSinIva() + calcularTotalSinIva()*IVA;
 	}
 
-	public void grabarPedido(String nombreFichero){
-		try {
-				VentanaRegistro vR= new VentanaRegistro(null);
-				
+	public void grabarPedido(String nombreFichero, String datosPersona){
+		try {			
 		        BufferedWriter fichero = new BufferedWriter(new FileWriter("files/" + nombreFichero + ".dat"));
-//		        fichero.write(vR.toString()+"\n");
+		        fichero.write(datosPersona+":  ");
 		        String linea = articulosPedido.toString();
 		        fichero.write(linea);
 		        fichero.close();

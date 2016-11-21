@@ -27,13 +27,13 @@
 	<section name="org.eclipse.wb.internal.swing.model.property.editor.icon.ImagePropertyEditor$ImageDialog">
 		<item value="199" key="x"/>
 		<item value="881" key="width"/>
-		<item value="213" key="y"/>
-		<item value="558" key="height"/>
+		<item value="178" key="y"/>
+		<item value="560" key="height"/>
 	</section>
 	<section name="org.eclipse.wb.internal.swing.model.property.editor.icon.IconPropertyEditor$ImageDialog">
-		<item value="244" key="x"/>
+		<item value="225" key="x"/>
 		<item value="881" key="width"/>
-		<item value="157" key="y"/>
+		<item value="144" key="y"/>
 		<item value="581" key="height"/>
 	</section>
 </section>
